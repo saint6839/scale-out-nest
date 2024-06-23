@@ -5,9 +5,11 @@ import {
   HttpStatus,
 } from "@nestjs/common";
 import { ApiResponseDto } from "../api/api-response.dto";
+import { error } from "console";
 
 export class ApiExceptionFilter implements ExceptionFilter {
   catch(exception: any, host: ArgumentsHost) {
+    console.log(exception);
     const ctx = host.switchToHttp();
     const response = ctx.getResponse();
 
@@ -17,9 +19,7 @@ export class ApiExceptionFilter implements ExceptionFilter {
         : HttpStatus.INTERNAL_SERVER_ERROR;
 
     const message =
-      exception instanceof HttpException
-        ? exception.getResponse()
-        : "Internal Server Error";
+      exception instanceof Error ? exception.message : "Internal Server Error";
 
     const errorResponse = new ApiResponseDto(
       false,
@@ -28,7 +28,5 @@ export class ApiExceptionFilter implements ExceptionFilter {
     );
 
     response.status(status).json(errorResponse);
-
-    console.log(response);
   }
 }
