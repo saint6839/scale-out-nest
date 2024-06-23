@@ -1,15 +1,15 @@
-import { LectureEnrollmentHistory } from "src/lecture/domain/entity/lecture-enrollment-history";
-import { LectureMapper } from "./../domain/mapper/lecture.mapper";
 import { Inject, Injectable } from "@nestjs/common";
+import { LectureEnrollmentHistory } from "src/lecture/domain/entity/lecture-enrollment-history";
+import { DataSource, EntityManager } from "typeorm";
+import { Lecture } from "../domain/entity/lecture";
+import { ILectureApplicationHistoryRepository } from "../domain/interface/repository/lecture-application-history.repository.interface";
+import { ILectureRepository } from "../domain/interface/repository/lecture.repository.interface";
 import { IEnrollLectureUseCase } from "../domain/interface/usecase/enroll-lecture.usecase.interface";
+import { LectureEnrollmentHistoryRepository } from "../infrastructure/repository/lecture-enrollment-history.repository";
+import { LectureRepository } from "../infrastructure/repository/lecture.repository";
 import { EnrollLectureDto } from "../presentation/dto/request/enroll-lecture.dto";
 import { LectureDto } from "../presentation/dto/response/lecture.dto";
-import { LectureRepository } from "../infrastructure/repository/lecture.repository";
-import { ILectureRepository } from "../domain/interface/repository/lecture.repository.interface";
-import { DataSource, EntityManager } from "typeorm";
-import { ILectureApplicationHistoryRepository } from "../domain/interface/repository/lecture-application-history.repository.interface";
-import { Lecture } from "../domain/entity/lecture";
-import { LectureEnrollmentHistoryRepository } from "../infrastructure/repository/lecture-enrollment-history.repository";
+import { LectureMapper } from "./../domain/mapper/lecture.mapper";
 
 export const NOT_EXIST_LECTURE_EXCEPTION_MESSAGE = "존재하지 않는 강의 입니다";
 export const ALREADY_ENROLLED_LECTURE_EXCEPTION_MESSAGE =
@@ -38,7 +38,7 @@ export class EnrollLectureUseCase implements IEnrollLectureUseCase {
         const lecture = await this.findLecture(dto, entityManger);
         await this.validateExistLectureEnrollmentHistory(dto, entityManger);
         await this.enrollLecture(dto, entityManger);
-        return await this.increaseEnrollmentCount(lecture, entityManger);
+        return await this.increaseLectureEnrollmentCount(lecture, entityManger);
       }
     );
   }
@@ -49,7 +49,7 @@ export class EnrollLectureUseCase implements IEnrollLectureUseCase {
    * @param entityManger
    * @returns LectureDto
    */
-  private async increaseEnrollmentCount(
+  private async increaseLectureEnrollmentCount(
     lecture: Lecture,
     entityManger: EntityManager
   ) {
