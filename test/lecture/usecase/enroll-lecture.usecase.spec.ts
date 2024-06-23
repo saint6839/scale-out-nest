@@ -63,7 +63,7 @@ describe("EnrollLectureUseCase", () => {
     dataSourceMock = module.get(DataSource);
   });
   describe("동시 수강 신청", () => {
-    it("여러 사람이 동시에 수강 신청을 할 때 가용 인원 수만큼만 신청에 성공하는지 테스트", async () => {
+    it("여러 사람이 동시에 수강 신청을 할 때 가용 인원 수만큼만 신청에 성공하는지, 가용 인원 초과 요청건들은 실패하는지 테스트", async () => {
       // given
       const lectureId = 1;
       const capacity = 3;
