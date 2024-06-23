@@ -27,7 +27,7 @@ export class CreateLectureUseCase implements ICreateLectureUseCase {
         );
         const createdLecture =
           this.lectureMapper.toDomainFromEntity(lectureEntity);
-        return this.lectureMapper.toDto(createdLecture);
+        return this.lectureMapper.toDtoFromDomain(createdLecture);
       }
     );
   }

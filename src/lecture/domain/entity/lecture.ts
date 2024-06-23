@@ -1,4 +1,7 @@
+export const CAPACITY_EXCEPTION_MESSAGE = "수강 신청 인원이 꽉 찼습니다.";
+
 export class Lecture {
+  private _version: number;
   private _id: number;
   private _name: string;
   private _startAt: Date;
@@ -8,6 +11,7 @@ export class Lecture {
   private _updatedAt: Date;
 
   constructor(
+    version: number = 0,
     id: number,
     name: string,
     startAt: Date,
@@ -16,6 +20,7 @@ export class Lecture {
     createdAt: Date = new Date(),
     updatedAt: Date = new Date()
   ) {
+    this._version = version;
     this._id = id;
     this._name = name;
     this._startAt = startAt;
@@ -23,6 +28,10 @@ export class Lecture {
     this._currentEnrollment = currentEnrollment;
     this._createdAt = createdAt;
     this._updatedAt = updatedAt;
+  }
+
+  get version(): number {
+    return this._version;
   }
 
   get id(): number {
@@ -47,7 +56,18 @@ export class Lecture {
     return this._updatedAt;
   }
 
+  /**
+   * @description 수강 신청 인원을 증가시킨다.
+   * @throws {Error} 수강 신청 인원이 꽉 찼을 때 발생한다.
+   */
+  public increaseEnrollment(): void {
+    if (this._currentEnrollment >= this._capacity) {
+      throw new Error(CAPACITY_EXCEPTION_MESSAGE);
+    }
+    this._currentEnrollment++;
+  }
+
   static create(name: string, startAt: Date, capacity: number): Lecture {
-    return new Lecture(0, name, startAt, capacity, 0);
+    return new Lecture(0, 0, name, startAt, capacity, 0);
   }
 }

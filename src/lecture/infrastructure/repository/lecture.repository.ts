@@ -3,7 +3,7 @@ import { Lecture } from "./../../domain/entity/lecture";
 import { Injectable } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
 import { LectureEntity } from "../entity/lecture.entity";
-import { EntityManager, Repository } from "typeorm";
+import { EntityManager, Repository, UpdateResult } from "typeorm";
 
 @Injectable()
 export class LectureRepository implements ILectureRepository {
@@ -11,6 +11,24 @@ export class LectureRepository implements ILectureRepository {
     @InjectRepository(LectureEntity)
     private readonly lectureRepository: Repository<LectureEntity>
   ) {}
+  async update(
+    lecture: Lecture,
+    entityManager: EntityManager
+  ): Promise<LectureEntity> {
+    const entity = LectureEntity.fromDomain(lecture);
+    await entityManager.update(
+      LectureEntity,
+      { id: lecture.id },
+      {
+        ...entity,
+        version: () => "version + 1",
+      }
+    );
+
+    return await entityManager.findOne(LectureEntity, {
+      where: { id: lecture.id },
+    });
+  }
 
   async findById(
     id: number,
@@ -24,7 +42,6 @@ export class LectureRepository implements ILectureRepository {
     entityManager: EntityManager
   ): Promise<LectureEntity> {
     const lectureEntity = LectureEntity.fromDomain(lecture);
-    const repository = entityManager;
-    return await repository.save(lectureEntity);
+    return await entityManager.save(lectureEntity);
   }
 }

@@ -7,18 +7,22 @@ import { TypeOrmModule } from "@nestjs/typeorm";
 import { LectureEntity } from "./infrastructure/entity/lecture.entity";
 import { LectureController } from "./presentation/controller/lecutre.controller";
 import { EnrollLectureUseCase } from "./usecase/enroll-lecture.usecase";
-import { LectureApplicationHistory } from "./domain/entity/lecture-application-history";
+import { LectureEnrollmentHistoryMapper } from "./domain/mapper/lecture-enrollment-history.mapper";
+import { LectureEnrollmentHistoryEntity } from "./infrastructure/entity/lecture-enrollment-history.entity";
+import { LectureEnrollmentHistoryRepository } from "./infrastructure/repository/lecture-enrollment-history.repository";
 
 @Module({
-  imports: [TypeOrmModule.forFeature([LectureEntity])],
+  imports: [
+    TypeOrmModule.forFeature([LectureEntity, LectureEnrollmentHistoryEntity]),
+  ],
   providers: [
     {
       provide: LectureRepository.name,
       useClass: LectureRepository,
     },
     {
-      provide: LectureApplicationHistory.name,
-      useClass: LectureApplicationHistory,
+      provide: LectureEnrollmentHistoryRepository.name,
+      useClass: LectureEnrollmentHistoryRepository,
     },
     {
       provide: CreateLectureUseCase.name,
@@ -29,6 +33,7 @@ import { LectureApplicationHistory } from "./domain/entity/lecture-application-h
       useClass: EnrollLectureUseCase,
     },
     LectureMapper,
+    LectureEnrollmentHistoryMapper,
   ],
   controllers: [LectureController],
 })

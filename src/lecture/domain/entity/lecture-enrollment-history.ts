@@ -1,4 +1,4 @@
-export class LectureApplicationHistory {
+export class LectureEnrollmentHistory {
   private _id: number;
   private _lectureId: number;
   private _userId: number;
@@ -9,8 +9,8 @@ export class LectureApplicationHistory {
     id: number,
     lectureId: number,
     userId: number,
-    createdAt: Date,
-    updatedAt: Date
+    createdAt?: Date,
+    updatedAt?: Date
   ) {
     this._id = id;
     this._lectureId = lectureId;
@@ -37,5 +37,9 @@ export class LectureApplicationHistory {
 
   get updatedAt(): Date {
     return this._updatedAt;
+  }
+
+  static create(lectureId: number, userId: number): LectureEnrollmentHistory {
+    return new LectureEnrollmentHistory(0, lectureId, userId);
   }
 }

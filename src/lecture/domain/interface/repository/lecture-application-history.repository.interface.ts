@@ -1,15 +1,21 @@
 import { EntityManager } from "typeorm";
-import { LectureApplicationHistory } from "../../entity/lecture-application-history";
-import { LectureApplicationHistoryEntity } from "src/lecture/infrastructure/entity/lecture-application-history.entity";
+import { LectureEnrollmentHistory } from "../../entity/lecture-enrollment-history";
+import { LectureEnrollmentHistoryEntity } from "src/lecture/infrastructure/entity/lecture-enrollment-history.entity";
 
 export interface ILectureApplicationHistoryRepository {
   create(
-    lectureApplicationHistory: LectureApplicationHistory,
+    lectureApplicationHistory: LectureEnrollmentHistory,
     entityManager: EntityManager
-  ): Promise<LectureApplicationHistoryEntity>;
+  ): Promise<LectureEnrollmentHistoryEntity>;
 
   findById(
     id: number,
     entityManager: EntityManager
-  ): Promise<LectureApplicationHistoryEntity>;
+  ): Promise<LectureEnrollmentHistoryEntity>;
+
+  findByLectureIdAndUserId(
+    lectureId: number,
+    userId: number,
+    entityManager: EntityManager
+  ): Promise<LectureEnrollmentHistoryEntity>;
 }
