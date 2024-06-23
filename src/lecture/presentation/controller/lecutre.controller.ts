@@ -3,6 +3,7 @@ import { EnrollLectureUseCase } from "./../../usecase/enroll-lecture.usecase";
 import { Body, Controller, Inject, Post } from "@nestjs/common";
 import { EnrollLectureDto } from "../dto/request/enroll-lecture.dto";
 import { LectureDto } from "../dto/response/lecture.dto";
+import { ApiResponseDto } from "src/common/api/api-response.dto";
 
 @Controller("/lectures")
 export class LectureController {
@@ -12,7 +13,13 @@ export class LectureController {
   ) {}
 
   @Post()
-  async enroll(@Body() dto: EnrollLectureDto): Promise<LectureDto> {
-    return this.enrollLectureUseCase.execute(dto);
+  async enroll(
+    @Body() dto: EnrollLectureDto
+  ): Promise<ApiResponseDto<LectureDto>> {
+    return new ApiResponseDto(
+      true,
+      "강의 등록 성공",
+      await this.enrollLectureUseCase.execute(dto)
+    );
   }
 }

@@ -11,7 +11,9 @@ export class LectureMapper {
       domain.name,
       domain.startAt,
       domain.capacity,
-      domain.currentEnrollment
+      domain.currentEnrollment,
+      domain.createdAt,
+      domain.updatedAt
     );
   }
 
