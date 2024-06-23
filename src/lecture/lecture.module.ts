@@ -1,5 +1,5 @@
 import { ILectureRepository } from "./domain/interface/repository/lecture.repository.interface";
-import { EnrollLectureUseCase } from "./usecase/enroll-lecture.usecase";
+import { CreateLectureUseCase } from "./usecase/create-lecture.usecase";
 import { LectureRepository } from "./infrastructure/repository/lecture.repository";
 import { Module } from "@nestjs/common";
 import { LectureMapper } from "./domain/mapper/lecture.mapper";
@@ -15,8 +15,8 @@ import { LectureController } from "./presentation/controller/lecutre.controller"
       useClass: LectureRepository,
     },
     {
-      provide: EnrollLectureUseCase.name,
-      useClass: EnrollLectureUseCase,
+      provide: CreateLectureUseCase.name,
+      useClass: CreateLectureUseCase,
     },
     LectureMapper,
   ],

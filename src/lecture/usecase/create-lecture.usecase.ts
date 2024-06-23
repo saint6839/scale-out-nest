@@ -1,6 +1,6 @@
 import { Inject, Injectable } from "@nestjs/common";
-import { ICreateLectureUseCase } from "../domain/interface/usecase/enroll-lecture.usecase.interface";
-import { CreateLectureDto } from "../presentation/dto/request/enroll-lecture.dto";
+import { ICreateLectureUseCase } from "../domain/interface/usecase/create-lecture.usecase.interface";
+import { CreateLectureDto } from "../presentation/dto/request/create-lecture.dto";
 import { LectureDto } from "../presentation/dto/response/lecture.dto";
 import { ILectureRepository } from "../domain/interface/repository/lecture.repository.interface";
 import { LectureMapper } from "../domain/mapper/lecture.mapper";
@@ -9,7 +9,7 @@ import { LectureRepository } from "../infrastructure/repository/lecture.reposito
 import { DataSource, EntityManager } from "typeorm";
 
 @Injectable()
-export class EnrollLectureUseCase implements ICreateLectureUseCase {
+export class CreateLectureUseCase implements ICreateLectureUseCase {
   constructor(
     @Inject(LectureRepository.name)
     private readonly lectureRepository: ILectureRepository,
