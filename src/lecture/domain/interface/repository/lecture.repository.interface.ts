@@ -7,4 +7,6 @@ export interface ILectureRepository {
     lecture: Lecture,
     entityManager: EntityManager
   ): Promise<LectureEntity>;
+
+  findById(id: number, entityManager: EntityManager): Promise<LectureEntity>;
 }

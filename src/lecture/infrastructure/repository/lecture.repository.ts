@@ -11,6 +11,14 @@ export class LectureRepository implements ILectureRepository {
     @InjectRepository(LectureEntity)
     private readonly lectureRepository: Repository<LectureEntity>
   ) {}
+
+  async findById(
+    id: number,
+    entityManager: EntityManager
+  ): Promise<LectureEntity> {
+    return await entityManager.findOne(LectureEntity, { where: { id } });
+  }
+
   async create(
     lecture: Lecture,
     entityManager: EntityManager
