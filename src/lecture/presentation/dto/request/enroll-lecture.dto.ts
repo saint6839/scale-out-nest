@@ -1,4 +1,4 @@
-export class EnrollLectureDto {
+export class CreateLectureDto {
   readonly name: string;
   readonly startAt: Date;
   readonly capacity: number;
