@@ -5,7 +5,6 @@ import {
   HttpStatus,
 } from "@nestjs/common";
 import { ApiResponseDto } from "../api/api-response.dto";
-import { error } from "console";
 
 export class ApiExceptionFilter implements ExceptionFilter {
   catch(exception: any, host: ArgumentsHost) {
