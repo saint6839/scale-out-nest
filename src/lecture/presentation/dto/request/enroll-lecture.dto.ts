@@ -1,8 +1,8 @@
 export class EnrollLectureDto {
-  readonly userId: string;
-  readonly lectureId: string;
+  readonly userId: number;
+  readonly lectureId: number;
 
-  constructor(userId: string, lectureId: string) {
+  constructor(userId: number, lectureId: number) {
     this.userId = userId;
     this.lectureId = lectureId;
   }
