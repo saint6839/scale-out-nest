@@ -3,7 +3,7 @@ import { Lecture } from "./../../domain/entity/lecture";
 import { Injectable } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
 import { LectureEntity } from "../entity/lecture.entity";
-import { Repository } from "typeorm";
+import { EntityManager, Repository } from "typeorm";
 
 @Injectable()
 export class LectureRepository implements ILectureRepository {
@@ -11,8 +11,12 @@ export class LectureRepository implements ILectureRepository {
     @InjectRepository(LectureEntity)
     private readonly lectureRepository: Repository<LectureEntity>
   ) {}
-  async create(lecture: Lecture): Promise<LectureEntity> {
+  async create(
+    lecture: Lecture,
+    entityManager: EntityManager
+  ): Promise<LectureEntity> {
     const lectureEntity = LectureEntity.fromDomain(lecture);
-    return await this.lectureRepository.save(lectureEntity);
+    const repository = entityManager;
+    return await repository.save(lectureEntity);
   }
 }

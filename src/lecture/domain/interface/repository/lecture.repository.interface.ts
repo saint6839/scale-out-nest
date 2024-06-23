@@ -1,6 +1,10 @@
 import { LectureEntity } from "src/lecture/infrastructure/entity/lecture.entity";
 import { Lecture } from "../../entity/lecture";
+import { EntityManager } from "typeorm";
 
 export interface ILectureRepository {
-  create(lecture: Lecture): Promise<LectureEntity>;
+  create(
+    lecture: Lecture,
+    entityManager: EntityManager
+  ): Promise<LectureEntity>;
 }
