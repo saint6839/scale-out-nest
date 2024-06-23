@@ -8,7 +8,17 @@ import { UserMapper } from "./domain/mapper/user.mapper";
 
 @Module({
   imports: [TypeOrmModule.forFeature([UserEntity])],
-  providers: [UserRepository, CreateUserUseCase, UserMapper],
+  providers: [
+    {
+      provide: UserRepository.name,
+      useClass: UserRepository,
+    },
+    {
+      provide: CreateUserUseCase.name,
+      useClass: CreateUserUseCase,
+    },
+    UserMapper,
+  ],
   controllers: [UserController],
 })
 export class UserModule {}
