@@ -1,7 +1,7 @@
 import { Injectable } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
 import { LectureEnrollmentHistory } from "src/lecture/domain/entity/lecture-enrollment-history";
-import { ILectureApplicationHistoryRepository as ILectureEnrollmentHistoryRepository } from "src/lecture/domain/interface/repository/lecture-application-history.repository.interface";
+import { ILectureEnrollmentHistoryRepository } from "src/lecture/domain/interface/repository/lecture-enrollment-history.repository.interface";
 import { EntityManager, Repository } from "typeorm";
 import { LectureEnrollmentHistoryEntity } from "../entity/lecture-enrollment-history.entity";
 

@@ -1,8 +1,8 @@
+import { LectureEnrollmentHistoryEntity } from "src/lecture/infrastructure/entity/lecture-enrollment-history.entity";
 import { EntityManager } from "typeorm";
 import { LectureEnrollmentHistory } from "../../entity/lecture-enrollment-history";
-import { LectureEnrollmentHistoryEntity } from "src/lecture/infrastructure/entity/lecture-enrollment-history.entity";
 
-export interface ILectureApplicationHistoryRepository {
+export interface ILectureEnrollmentHistoryRepository {
   create(
     lectureApplicationHistory: LectureEnrollmentHistory,
     entityManager: EntityManager

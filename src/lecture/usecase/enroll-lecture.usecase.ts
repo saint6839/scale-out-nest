@@ -2,7 +2,7 @@ import { Inject, Injectable } from "@nestjs/common";
 import { LectureEnrollmentHistory } from "src/lecture/domain/entity/lecture-enrollment-history";
 import { DataSource, EntityManager } from "typeorm";
 import { Lecture } from "../domain/entity/lecture";
-import { ILectureApplicationHistoryRepository } from "../domain/interface/repository/lecture-application-history.repository.interface";
+import { ILectureEnrollmentHistoryRepository } from "../domain/interface/repository/lecture-enrollment-history.repository.interface";
 import { ILectureRepository } from "../domain/interface/repository/lecture.repository.interface";
 import { IEnrollLectureUseCase } from "../domain/interface/usecase/enroll-lecture.usecase.interface";
 import { LectureEnrollmentHistoryRepository } from "../infrastructure/repository/lecture-enrollment-history.repository";
@@ -21,7 +21,7 @@ export class EnrollLectureUseCase implements IEnrollLectureUseCase {
     @Inject(LectureRepository.name)
     private readonly lectureRepository: ILectureRepository,
     @Inject(LectureEnrollmentHistoryRepository.name)
-    private readonly lectureApplicationHistory: ILectureApplicationHistoryRepository,
+    private readonly lectureApplicationHistory: ILectureEnrollmentHistoryRepository,
     private readonly lectureMapper: LectureMapper,
     private readonly dataSource: DataSource
   ) {}
