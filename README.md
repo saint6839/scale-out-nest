@@ -1,73 +1,53 @@
-<p align="center">
-  <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="200" alt="Nest Logo" /></a>
-</p>
+# 클린아키텍처 기반의 멀티 인스턴스 서버 수강 신청 동시성 제어하기
 
-[circleci-image]: https://img.shields.io/circleci/build/github/nestjs/nest/master?token=abc123def456
-[circleci-url]: https://circleci.com/gh/nestjs/nest
+### ERD 개요
 
-  <p align="center">A progressive <a href="http://nodejs.org" target="_blank">Node.js</a> framework for building efficient and scalable server-side applications.</p>
-    <p align="center">
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/v/@nestjs/core.svg" alt="NPM Version" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/l/@nestjs/core.svg" alt="Package License" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/dm/@nestjs/common.svg" alt="NPM Downloads" /></a>
-<a href="https://circleci.com/gh/nestjs/nest" target="_blank"><img src="https://img.shields.io/circleci/build/github/nestjs/nest/master" alt="CircleCI" /></a>
-<a href="https://coveralls.io/github/nestjs/nest?branch=master" target="_blank"><img src="https://coveralls.io/repos/github/nestjs/nest/badge.svg?branch=master#9" alt="Coverage" /></a>
-<a href="https://discord.gg/G7Qnnhy" target="_blank"><img src="https://img.shields.io/badge/discord-online-brightgreen.svg" alt="Discord"/></a>
-<a href="https://opencollective.com/nest#backer" target="_blank"><img src="https://opencollective.com/nest/backers/badge.svg" alt="Backers on Open Collective" /></a>
-<a href="https://opencollective.com/nest#sponsor" target="_blank"><img src="https://opencollective.com/nest/sponsors/badge.svg" alt="Sponsors on Open Collective" /></a>
-  <a href="https://paypal.me/kamilmysliwiec" target="_blank"><img src="https://img.shields.io/badge/Donate-PayPal-ff3f59.svg"/></a>
-    <a href="https://opencollective.com/nest#sponsor"  target="_blank"><img src="https://img.shields.io/badge/Support%20us-Open%20Collective-41B883.svg" alt="Support us"></a>
-  <a href="https://twitter.com/nestframework" target="_blank"><img src="https://img.shields.io/twitter/follow/nestframework.svg?style=social&label=Follow"></a>
-</p>
-  <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
-  [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
+![alt text](image.png)
 
-## Description
+### 엔티티 구성
 
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
+**사용자**
 
-## Installation
+- 간단하게 이름 필드만 존재하도록 구현
 
-```bash
-$ yarn install
-```
+**강의**
 
-## Running the app
+- 강의명
+- 수강 신청 시작 시간
+- 정원
+- 현재 신청 인원
 
-```bash
-# development
-$ yarn run start
+**수강 신청 이력**
 
-# watch mode
-$ yarn run start:dev
+- 강의id
+- 사용자id
 
-# production mode
-$ yarn run start:prod
-```
+### 아키텍처 개요
 
-## Test
+**domain**
 
-```bash
-# unit tests
-$ yarn run test
+- 비즈니스로직에 사용되는 도메인 엔티티 클래스가 위치
 
-# e2e tests
-$ yarn run test:e2e
+**infrastructure**
 
-# test coverage
-$ yarn run test:cov
-```
+- 엔티티 클래스와 데이터베이스 상호작용이 일어나는 계층
 
-## Support
+**presentation**
 
-Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
+- 사용자와 상호작용이 일어나는 계층
 
-## Stay in touch
+\*\*usecase
 
-- Author - [Kamil Myśliwiec](https://kamilmysliwiec.com)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
+- 각 도메인의 비즈니스 로직이 실행되는 계층
 
-## License
+### 구현 개요
 
-Nest is [MIT licensed](LICENSE).
+- 수강 신청의 현재 신청자수를 증가시키는 로직의 동시성 제어를 위해 낙관적 락을 사용하였습니다.
+  - 비관적 락이 아닌 낙관적 락은 선택한 이유는 순차 처리에 대한 요구사항이 없었으며, 비관적 락 특성으로 인한 성능적 제약이 우려되었기 때문입니다.
+- 각 도메인 엔티티 객체의 속성의 값의 변경이 필요할 경우, 값 변경의 책임은 속성을 가지고 있는 객체 자신이 갖도록 객체지향적으로 구현하였습니다.
+
+### 테스트 코드 구현 여부
+
+- [x] 단위 테스트
+- [ ] 통합 테스트
+- [ ] e2e 테스트
