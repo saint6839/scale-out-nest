@@ -18,4 +18,9 @@ export interface ILectureEnrollmentHistoryRepository {
     userId: number,
     entityManager: EntityManager
   ): Promise<LectureEnrollmentHistoryEntity>;
+
+  findByUserId(
+    userId: number,
+    entityManager: EntityManager
+  ): Promise<LectureEnrollmentHistoryEntity[]>;
 }

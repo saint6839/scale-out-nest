@@ -1,15 +1,15 @@
-import { ILectureRepository } from "./domain/interface/repository/lecture.repository.interface";
-import { CreateLectureUseCase } from "./usecase/create-lecture.usecase";
-import { LectureRepository } from "./infrastructure/repository/lecture.repository";
 import { Module } from "@nestjs/common";
-import { LectureMapper } from "./domain/mapper/lecture.mapper";
 import { TypeOrmModule } from "@nestjs/typeorm";
-import { LectureEntity } from "./infrastructure/entity/lecture.entity";
-import { LectureController } from "./presentation/controller/lecutre.controller";
-import { EnrollLectureUseCase } from "./usecase/enroll-lecture.usecase";
 import { LectureEnrollmentHistoryMapper } from "./domain/mapper/lecture-enrollment-history.mapper";
+import { LectureMapper } from "./domain/mapper/lecture.mapper";
 import { LectureEnrollmentHistoryEntity } from "./infrastructure/entity/lecture-enrollment-history.entity";
+import { LectureEntity } from "./infrastructure/entity/lecture.entity";
 import { LectureEnrollmentHistoryRepository } from "./infrastructure/repository/lecture-enrollment-history.repository";
+import { LectureRepository } from "./infrastructure/repository/lecture.repository";
+import { LectureController } from "./presentation/controller/lecutre.controller";
+import { BrowseLectureEnrollmentHistoriesUseCase } from "./usecase/browse-lecture-enrollment-histories.usecase";
+import { CreateLectureUseCase } from "./usecase/create-lecture.usecase";
+import { EnrollLectureUseCase } from "./usecase/enroll-lecture.usecase";
 
 @Module({
   imports: [
@@ -31,6 +31,10 @@ import { LectureEnrollmentHistoryRepository } from "./infrastructure/repository/
     {
       provide: EnrollLectureUseCase.name,
       useClass: EnrollLectureUseCase,
+    },
+    {
+      provide: BrowseLectureEnrollmentHistoriesUseCase.name,
+      useClass: BrowseLectureEnrollmentHistoriesUseCase,
     },
     LectureMapper,
     LectureEnrollmentHistoryMapper,

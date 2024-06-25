@@ -13,6 +13,15 @@ export class LectureEnrollmentHistoryRepository
     @InjectRepository(LectureEnrollmentHistoryEntity)
     private readonly repository: Repository<LectureEnrollmentHistoryEntity>
   ) {}
+
+  async findByUserId(
+    userId: number,
+    entityManager: EntityManager
+  ): Promise<LectureEnrollmentHistoryEntity[]> {
+    return await entityManager.find(LectureEnrollmentHistoryEntity, {
+      where: { userId },
+    });
+  }
   async create(
     lectureApplicationHistory: LectureEnrollmentHistory,
     entityManager: EntityManager
