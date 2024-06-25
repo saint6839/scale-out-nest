@@ -1,6 +1,6 @@
 import { LectureEntity } from "src/lecture/infrastructure/entity/lecture.entity";
+import { EntityManager } from "typeorm";
 import { Lecture } from "../../entity/lecture";
-import { EntityManager, UpdateResult } from "typeorm";
 
 export interface ILectureRepository {
   create(
@@ -14,4 +14,6 @@ export interface ILectureRepository {
     lecture: Lecture,
     entityManager: EntityManager
   ): Promise<LectureEntity>;
+
+  findAll(): Promise<LectureEntity[]>;
 }

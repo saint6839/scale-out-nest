@@ -8,6 +8,7 @@ import { LectureEnrollmentHistoryRepository } from "./infrastructure/repository/
 import { LectureRepository } from "./infrastructure/repository/lecture.repository";
 import { LectureController } from "./presentation/controller/lecutre.controller";
 import { BrowseLectureEnrollmentHistoriesUseCase } from "./usecase/browse-lecture-enrollment-histories.usecase";
+import { BrowseLecturesUseCase } from "./usecase/browse-lectures.usecase";
 import { CreateLectureUseCase } from "./usecase/create-lecture.usecase";
 import { EnrollLectureUseCase } from "./usecase/enroll-lecture.usecase";
 
@@ -35,6 +36,10 @@ import { EnrollLectureUseCase } from "./usecase/enroll-lecture.usecase";
     {
       provide: BrowseLectureEnrollmentHistoriesUseCase.name,
       useClass: BrowseLectureEnrollmentHistoriesUseCase,
+    },
+    {
+      provide: BrowseLecturesUseCase.name,
+      useClass: BrowseLecturesUseCase,
     },
     LectureMapper,
     LectureEnrollmentHistoryMapper,

@@ -1,9 +1,9 @@
-import { ILectureRepository } from "src/lecture/domain/interface/repository/lecture.repository.interface";
-import { Lecture } from "./../../domain/entity/lecture";
 import { Injectable } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
+import { ILectureRepository } from "src/lecture/domain/interface/repository/lecture.repository.interface";
+import { EntityManager, Repository } from "typeorm";
 import { LectureEntity } from "../entity/lecture.entity";
-import { EntityManager, Repository, UpdateResult } from "typeorm";
+import { Lecture } from "./../../domain/entity/lecture";
 
 @Injectable()
 export class LectureRepository implements ILectureRepository {
@@ -11,6 +11,11 @@ export class LectureRepository implements ILectureRepository {
     @InjectRepository(LectureEntity)
     private readonly lectureRepository: Repository<LectureEntity>
   ) {}
+
+  async findAll(): Promise<LectureEntity[]> {
+    return await this.lectureRepository.find();
+  }
+
   async update(
     lecture: Lecture,
     entityManager: EntityManager
