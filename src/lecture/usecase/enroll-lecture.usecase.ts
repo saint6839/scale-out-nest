@@ -120,6 +120,10 @@ export class EnrollLectureUseCase implements IEnrollLectureUseCase {
       entityManger
     );
     if (!lectureEntity) throw new Error(NOT_EXIST_LECTURE_EXCEPTION_MESSAGE);
-    return this.lectureMapper.toDomainFromEntity(lectureEntity);
+    const lecture: Lecture =
+      this.lectureMapper.toDomainFromEntity(lectureEntity);
+
+    lecture.validateEnrollStartAt(new Date());
+    return lecture;
   }
 }

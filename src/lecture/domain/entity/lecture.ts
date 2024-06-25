@@ -1,5 +1,5 @@
 export const CAPACITY_EXCEPTION_MESSAGE = "수강 신청 인원이 꽉 찼습니다.";
-
+export const CANT_ENROLL_TIME_EXCEPTION_MESSAGE = "수강 신청 시간이 아닙니다.";
 export class Lecture {
   private _version: number;
   private _id: number;
@@ -56,6 +56,10 @@ export class Lecture {
     return this._updatedAt;
   }
 
+  static create(name: string, startAt: Date, capacity: number): Lecture {
+    return new Lecture(0, 0, name, startAt, capacity, 0);
+  }
+
   /**
    * @description 수강 신청 인원을 증가시킨다.
    * @throws {Error} 수강 신청 인원이 꽉 찼을 때 발생한다.
@@ -67,7 +71,13 @@ export class Lecture {
     this._currentEnrollment++;
   }
 
-  static create(name: string, startAt: Date, capacity: number): Lecture {
-    return new Lecture(0, 0, name, startAt, capacity, 0);
+  /**
+   * @description 요청이 들어온 시간이 startAt 이후인지 확인한다.
+   * @throws {Error} 요청이 들어온 시간이 startAt 이후가 아닐 때 발생한다.
+   */
+  public validateEnrollStartAt(currentTime: Date): void {
+    if (currentTime.getTime() < this._startAt.getTime()) {
+      throw new Error(CANT_ENROLL_TIME_EXCEPTION_MESSAGE);
+    }
   }
 }
