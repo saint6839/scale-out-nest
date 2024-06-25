@@ -1,11 +1,15 @@
 import { Test, TestingModule } from "@nestjs/testing";
-import { Lecture } from "src/lecture/domain/entity/lecture";
+import {
+  CANT_ENROLL_TIME_EXCEPTION_MESSAGE,
+  Lecture,
+} from "src/lecture/domain/entity/lecture";
 import { LectureEnrollmentHistory } from "src/lecture/domain/entity/lecture-enrollment-history";
 import { LectureMapper } from "src/lecture/domain/mapper/lecture.mapper";
 import { LectureEntity } from "src/lecture/infrastructure/entity/lecture.entity";
 import { LectureEnrollmentHistoryRepository } from "src/lecture/infrastructure/repository/lecture-enrollment-history.repository";
 import { LectureRepository } from "src/lecture/infrastructure/repository/lecture.repository";
 import { EnrollLectureDto } from "src/lecture/presentation/dto/request/enroll-lecture.dto";
+import { LectureDto } from "src/lecture/presentation/dto/response/lecture.dto";
 import {
   ALREADY_ENROLLED_LECTURE_EXCEPTION_MESSAGE,
   EnrollLectureUseCase,
@@ -186,8 +190,20 @@ describe("EnrollLectureUseCase", () => {
     it("이미 수강 신청한 강의면 예외를 던진다", async () => {
       // given
       const dto = new EnrollLectureDto(1, 1);
-      const lectureEntity = { id: 1 } as LectureEntity;
+      const pastDate = new Date();
+      pastDate.setDate(pastDate.getDate() - 1);
+      const lectureEntity = { id: 1, startAt: pastDate } as LectureEntity;
+      const lecture = new Lecture(
+        0,
+        lectureEntity.id,
+        "강의명",
+        new Date(),
+        30,
+        0
+      );
+
       lectureRepositoryMock.findById.mockResolvedValue(lectureEntity);
+      lectureMapperMock.toDomainFromEntity.mockReturnValue(lecture);
       lectureEnrollmentHistoryRepositoryMock.findByLectureIdAndUserId.mockResolvedValue(
         {} as LectureEnrollmentHistory
       );
@@ -197,6 +213,82 @@ describe("EnrollLectureUseCase", () => {
       // when & then
       await expect(useCase.execute(dto)).rejects.toThrow(
         ALREADY_ENROLLED_LECTURE_EXCEPTION_MESSAGE
+      );
+    });
+
+    it("수강 신청 시간이 startAt 보다 빠르다면, 예외를 던진다", async () => {
+      // given
+      const lectureId = 1;
+      const userId = 1;
+      const futureDate = new Date();
+      futureDate.setDate(futureDate.getDate() + 1); // 내일 날짜로 설정
+      const dto = new EnrollLectureDto(userId, lectureId);
+      const lectureEntity = {
+        id: lectureId,
+        startAt: futureDate,
+      } as LectureEntity;
+      const lecture = new Lecture(0, lectureId, "강의명", futureDate, 30, 0);
+
+      lectureRepositoryMock.findById.mockResolvedValue(lectureEntity);
+      lectureMapperMock.toDomainFromEntity.mockReturnValue(lecture);
+      dataSourceMock.transaction.mockImplementation(
+        jest.fn().mockImplementation((cb) => cb({} as EntityManager))
+      );
+
+      // when & then
+      await expect(useCase.execute(dto)).rejects.toThrow(
+        CANT_ENROLL_TIME_EXCEPTION_MESSAGE
+      );
+    });
+
+    it("수강 신청 시간이 startAt 이후라면, 정상적으로 처리된다", async () => {
+      // given
+      const lectureId = 1;
+      const userId = 1;
+      const pastDate = new Date();
+      pastDate.setDate(pastDate.getDate() - 1); // 어제 날짜로 설정
+      const dto = new EnrollLectureDto(userId, lectureId);
+      const lectureEntity = {
+        id: lectureId,
+        startAt: pastDate,
+      } as LectureEntity;
+      const lecture = new Lecture(0, lectureId, "강의명", pastDate, 30, 0);
+      const updatedLecture = new Lecture(
+        0,
+        lectureId,
+        "강의명",
+        pastDate,
+        30,
+        1
+      );
+      const expectedLectureDto: LectureDto = {
+        id: lectureId,
+        name: "강의명",
+        currentEnrollment: 1,
+      } as LectureDto;
+
+      lectureRepositoryMock.findById.mockResolvedValue(lectureEntity);
+      lectureEnrollmentHistoryRepositoryMock.findByLectureIdAndUserId.mockResolvedValue(
+        null
+      );
+      lectureMapperMock.toDomainFromEntity
+        .mockReturnValueOnce(lecture)
+        .mockReturnValueOnce(updatedLecture);
+      lectureRepositoryMock.update.mockResolvedValue({} as LectureEntity);
+      lectureMapperMock.toDtoFromDomain.mockReturnValue(expectedLectureDto);
+      dataSourceMock.transaction.mockImplementation(
+        jest.fn().mockImplementation((cb) => cb({} as EntityManager))
+      );
+
+      // when
+      const result = await useCase.execute(dto);
+
+      // then
+      expect(result).toBeDefined();
+      expect(result).toEqual(expectedLectureDto);
+      expect(lectureRepositoryMock.update).toHaveBeenCalled();
+      expect(lectureMapperMock.toDtoFromDomain).toHaveBeenCalledWith(
+        updatedLecture
       );
     });
   });
