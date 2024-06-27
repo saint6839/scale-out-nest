@@ -49,7 +49,7 @@ export class EnrollLectureUseCase implements IEnrollLectureUseCase {
           entityManger
         );
         await this.enrollLecture(dto, entityManger);
-        return await this.increaseLectureEnrollmentCount(
+        return await this.increaseLectureDetailCurrentEnrollment(
           lectureDetail,
           entityManger
         );
@@ -63,7 +63,7 @@ export class EnrollLectureUseCase implements IEnrollLectureUseCase {
    * @param entityManger
    * @returns LectureDto
    */
-  private async increaseLectureEnrollmentCount(
+  private async increaseLectureDetailCurrentEnrollment(
     lectureDetail: LectureDetail,
     entityManger: EntityManager
   ): Promise<void> {
