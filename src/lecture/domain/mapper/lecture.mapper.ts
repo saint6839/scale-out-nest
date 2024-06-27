@@ -10,9 +10,6 @@ export class LectureMapper {
       ? new LectureDto(
           domain.id,
           domain.name,
-          domain.startAt,
-          domain.capacity,
-          domain.currentEnrollment,
           domain.createdAt,
           domain.updatedAt
         )
@@ -20,27 +17,11 @@ export class LectureMapper {
   }
 
   toDomainFromDto(dto: LectureDto): Lecture {
-    return dto
-      ? new Lecture(
-          dto.id,
-          dto.name,
-          dto.startAt,
-          dto.capacity,
-          dto.currentEnrollment
-        )
-      : null;
+    return dto ? new Lecture(dto.id, dto.name) : null;
   }
 
   toDomainFromEntity(entity: LectureEntity): Lecture {
-    return entity
-      ? new Lecture(
-          entity.id,
-          entity.name,
-          entity.startAt,
-          entity.capacity,
-          entity.currentEnrollment
-        )
-      : null;
+    return entity ? new Lecture(entity.id, entity.name) : null;
   }
 
   toEntityFromDomain(domain: Lecture): LectureEntity {

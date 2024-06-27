@@ -2,6 +2,7 @@ import { Module } from "@nestjs/common";
 import { TypeOrmModule } from "@nestjs/typeorm";
 import { LectureEnrollmentHistoryMapper } from "./domain/mapper/lecture-enrollment-history.mapper";
 import { LectureMapper } from "./domain/mapper/lecture.mapper";
+import { LectureDetailEntity } from "./infrastructure/entity/lecture-detail.entity";
 import { LectureEnrollmentHistoryEntity } from "./infrastructure/entity/lecture-enrollment-history.entity";
 import { LectureEntity } from "./infrastructure/entity/lecture.entity";
 import { LectureEnrollmentHistoryRepository } from "./infrastructure/repository/lecture-enrollment-history.repository";
@@ -14,7 +15,11 @@ import { EnrollLectureUseCase } from "./usecase/enroll-lecture.usecase";
 
 @Module({
   imports: [
-    TypeOrmModule.forFeature([LectureEntity, LectureEnrollmentHistoryEntity]),
+    TypeOrmModule.forFeature([
+      LectureEntity,
+      LectureEnrollmentHistoryEntity,
+      LectureDetailEntity,
+    ]),
   ],
   providers: [
     {

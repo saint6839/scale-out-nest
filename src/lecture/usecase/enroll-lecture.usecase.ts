@@ -54,7 +54,7 @@ export class EnrollLectureUseCase implements IEnrollLectureUseCase {
     lecture: Lecture,
     entityManger: EntityManager
   ) {
-    lecture.increaseEnrollment();
+    // lecture.increaseEnrollment();
     const updatedLectureEntity = await this.lectureRepository.update(
       lecture,
       entityManger
@@ -125,7 +125,7 @@ export class EnrollLectureUseCase implements IEnrollLectureUseCase {
     const lecture: Lecture =
       this.lectureMapper.toDomainFromEntity(lectureEntity);
 
-    lecture.validateEnrollStartAt(new Date());
+    // lecture.validateEnrollStartAt(new Date());
     return lecture;
   }
 }

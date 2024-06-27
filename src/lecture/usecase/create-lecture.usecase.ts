@@ -1,12 +1,12 @@
 import { Inject, Injectable } from "@nestjs/common";
+import { DataSource, EntityManager } from "typeorm";
+import { Lecture } from "../domain/entity/lecture";
+import { ILectureRepository } from "../domain/interface/repository/lecture.repository.interface";
 import { ICreateLectureUseCase } from "../domain/interface/usecase/create-lecture.usecase.interface";
+import { LectureMapper } from "../domain/mapper/lecture.mapper";
+import { LectureRepository } from "../infrastructure/repository/lecture.repository";
 import { CreateLectureDto } from "../presentation/dto/request/create-lecture.dto";
 import { LectureDto } from "../presentation/dto/response/lecture.dto";
-import { ILectureRepository } from "../domain/interface/repository/lecture.repository.interface";
-import { LectureMapper } from "../domain/mapper/lecture.mapper";
-import { Lecture } from "../domain/entity/lecture";
-import { LectureRepository } from "../infrastructure/repository/lecture.repository";
-import { DataSource, EntityManager } from "typeorm";
 
 @Injectable()
 export class CreateLectureUseCase implements ICreateLectureUseCase {
@@ -20,7 +20,7 @@ export class CreateLectureUseCase implements ICreateLectureUseCase {
   async execute(dto: CreateLectureDto): Promise<LectureDto> {
     return await this.dataSource.transaction(
       async (entityManager: EntityManager) => {
-        const lecture = Lecture.create(dto.name, dto.startAt, dto.capacity);
+        const lecture = Lecture.create(dto.name);
         const lectureEntity = await this.lectureRepository.create(
           lecture,
           entityManager
