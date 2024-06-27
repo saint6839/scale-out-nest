@@ -43,7 +43,11 @@ export class EnrollLectureUseCase implements IEnrollLectureUseCase {
     return await this.dataSource.transaction(
       async (entityManger: EntityManager) => {
         const lectureDetail = await this.findLectureDetail(dto, entityManger);
-        await this.validateExistLectureEnrollmentHistory(dto, entityManger);
+        await this.validateExistLectureEnrollmentHistory(
+          dto,
+          lectureDetail,
+          entityManger
+        );
         await this.enrollLecture(dto, entityManger);
         return await this.increaseLectureEnrollmentCount(
           lectureDetail,
@@ -94,16 +98,17 @@ export class EnrollLectureUseCase implements IEnrollLectureUseCase {
    */
   private async validateExistLectureEnrollmentHistory(
     dto: EnrollLectureDto,
+    lectureDetail: LectureDetail,
     entityManger: EntityManager
   ): Promise<void> {
-    const existLectureApplicationHistoryEntity =
+    const existLectureEnrollmentHistoryEntity =
       await this.lectureEnrollmentHistory.findByLectureIdAndUserId(
-        dto.lectureDetailId,
+        lectureDetail.lectureId,
         dto.userId,
         entityManger
       );
 
-    if (existLectureApplicationHistoryEntity) {
+    if (existLectureEnrollmentHistoryEntity) {
       throw new Error(ALREADY_ENROLLED_LECTURE_EXCEPTION_MESSAGE);
     }
   }
