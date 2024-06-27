@@ -32,6 +32,7 @@ describe("EnrollLectureUseCase", () => {
           provide: LectureRepository.name,
           useValue: {
             findById: jest.fn(),
+            findByIdWithLock: jest.fn(),
             update: jest.fn(),
           },
         },
@@ -73,16 +74,9 @@ describe("EnrollLectureUseCase", () => {
       const capacity = 3;
       const totalAttempts = 5;
       const lectureEntity = { id: lectureId, capacity } as LectureEntity;
-      const lecture = new Lecture(
-        0,
-        lectureId,
-        "강의명",
-        new Date(),
-        capacity,
-        0
-      );
+      const lecture = new Lecture(lectureId, "강의명", new Date(), capacity, 0);
 
-      lectureRepositoryMock.findById.mockResolvedValue(lectureEntity);
+      lectureRepositoryMock.findByIdWithLock.mockResolvedValue(lectureEntity);
       lectureEnrollmentHistoryRepositoryMock.findByLectureIdAndUserId.mockResolvedValue(
         null
       );
@@ -129,9 +123,8 @@ describe("EnrollLectureUseCase", () => {
       const userId = 1;
       const dto = new EnrollLectureDto(userId, lectureId);
       const lectureEntity = { id: lectureId } as LectureEntity;
-      const lecture = new Lecture(0, lectureId, "강의명", new Date(), 30, 0);
+      const lecture = new Lecture(lectureId, "강의명", new Date(), 30, 0);
       const updatedLecture = new Lecture(
-        0,
         lectureId,
         "강의명",
         new Date(),
@@ -143,7 +136,7 @@ describe("EnrollLectureUseCase", () => {
         currentEnrollment: 1,
       } as LectureEntity;
 
-      lectureRepositoryMock.findById.mockResolvedValue(lectureEntity);
+      lectureRepositoryMock.findByIdWithLock.mockResolvedValue(lectureEntity);
       lectureEnrollmentHistoryRepositoryMock.findByLectureIdAndUserId.mockResolvedValue(
         null
       );
@@ -159,10 +152,6 @@ describe("EnrollLectureUseCase", () => {
       await useCase.execute(dto);
 
       // then
-      expect(lectureRepositoryMock.findById).toHaveBeenCalledWith(
-        lectureId,
-        expect.any(Object)
-      );
       expect(
         lectureEnrollmentHistoryRepositoryMock.findByLectureIdAndUserId
       ).toHaveBeenCalledWith(lectureId, userId, expect.any(Object));
@@ -176,7 +165,7 @@ describe("EnrollLectureUseCase", () => {
     it("강의가 존재하지 않으면 예외를 던진다", async () => {
       // given
       const dto = new EnrollLectureDto(1, 1);
-      lectureRepositoryMock.findById.mockResolvedValue(null);
+      lectureRepositoryMock.findByIdWithLock.mockResolvedValue(null);
       dataSourceMock.transaction.mockImplementation(
         jest.fn().mockImplementation((cb) => cb({} as EntityManager))
       );
@@ -194,7 +183,6 @@ describe("EnrollLectureUseCase", () => {
       pastDate.setDate(pastDate.getDate() - 1);
       const lectureEntity = { id: 1, startAt: pastDate } as LectureEntity;
       const lecture = new Lecture(
-        0,
         lectureEntity.id,
         "강의명",
         new Date(),
@@ -202,7 +190,7 @@ describe("EnrollLectureUseCase", () => {
         0
       );
 
-      lectureRepositoryMock.findById.mockResolvedValue(lectureEntity);
+      lectureRepositoryMock.findByIdWithLock.mockResolvedValue(lectureEntity);
       lectureMapperMock.toDomainFromEntity.mockReturnValue(lecture);
       lectureEnrollmentHistoryRepositoryMock.findByLectureIdAndUserId.mockResolvedValue(
         {} as LectureEnrollmentHistory
@@ -227,9 +215,9 @@ describe("EnrollLectureUseCase", () => {
         id: lectureId,
         startAt: futureDate,
       } as LectureEntity;
-      const lecture = new Lecture(0, lectureId, "강의명", futureDate, 30, 0);
+      const lecture = new Lecture(lectureId, "강의명", futureDate, 30, 0);
 
-      lectureRepositoryMock.findById.mockResolvedValue(lectureEntity);
+      lectureRepositoryMock.findByIdWithLock.mockResolvedValue(lectureEntity);
       lectureMapperMock.toDomainFromEntity.mockReturnValue(lecture);
       dataSourceMock.transaction.mockImplementation(
         jest.fn().mockImplementation((cb) => cb({} as EntityManager))
@@ -252,22 +240,15 @@ describe("EnrollLectureUseCase", () => {
         id: lectureId,
         startAt: pastDate,
       } as LectureEntity;
-      const lecture = new Lecture(0, lectureId, "강의명", pastDate, 30, 0);
-      const updatedLecture = new Lecture(
-        0,
-        lectureId,
-        "강의명",
-        pastDate,
-        30,
-        1
-      );
+      const lecture = new Lecture(lectureId, "강의명", pastDate, 30, 0);
+      const updatedLecture = new Lecture(lectureId, "강의명", pastDate, 30, 1);
       const expectedLectureDto: LectureDto = {
         id: lectureId,
         name: "강의명",
         currentEnrollment: 1,
       } as LectureDto;
 
-      lectureRepositoryMock.findById.mockResolvedValue(lectureEntity);
+      lectureRepositoryMock.findByIdWithLock.mockResolvedValue(lectureEntity);
       lectureEnrollmentHistoryRepositoryMock.findByLectureIdAndUserId.mockResolvedValue(
         null
       );

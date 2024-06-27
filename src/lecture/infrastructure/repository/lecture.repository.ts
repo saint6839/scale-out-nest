@@ -1,5 +1,6 @@
 import { Injectable } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
+import { LockMode } from "src/lecture/domain/enum/lock-mode.enum";
 import { ILectureRepository } from "src/lecture/domain/interface/repository/lecture.repository.interface";
 import { EntityManager, Repository } from "typeorm";
 import { LectureEntity } from "../entity/lecture.entity";
@@ -11,6 +12,17 @@ export class LectureRepository implements ILectureRepository {
     @InjectRepository(LectureEntity)
     private readonly lectureRepository: Repository<LectureEntity>
   ) {}
+
+  async findByIdWithLock(
+    id: number,
+    entityManager: EntityManager,
+    lockMode: LockMode
+  ): Promise<LectureEntity> {
+    return await entityManager.findOne(LectureEntity, {
+      where: { id },
+      lock: { mode: lockMode },
+    });
+  }
 
   async findAll(): Promise<LectureEntity[]> {
     return await this.lectureRepository.find();
@@ -26,7 +38,6 @@ export class LectureRepository implements ILectureRepository {
       { id: lecture.id },
       {
         ...entity,
-        version: () => "version + 1",
       }
     );
 

@@ -1,8 +1,7 @@
 import { Injectable } from "@nestjs/common";
+import { LectureEntity } from "src/lecture/infrastructure/entity/lecture.entity";
 import { LectureDto } from "src/lecture/presentation/dto/response/lecture.dto";
 import { Lecture } from "../entity/lecture";
-import { LectureEntity } from "src/lecture/infrastructure/entity/lecture.entity";
-import { Entity } from "typeorm";
 
 @Injectable()
 export class LectureMapper {
@@ -23,7 +22,6 @@ export class LectureMapper {
   toDomainFromDto(dto: LectureDto): Lecture {
     return dto
       ? new Lecture(
-          0,
           dto.id,
           dto.name,
           dto.startAt,
@@ -36,7 +34,6 @@ export class LectureMapper {
   toDomainFromEntity(entity: LectureEntity): Lecture {
     return entity
       ? new Lecture(
-          entity.version,
           entity.id,
           entity.name,
           entity.startAt,

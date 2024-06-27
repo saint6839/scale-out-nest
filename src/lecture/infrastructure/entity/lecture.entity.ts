@@ -1,18 +1,14 @@
 import { Lecture } from "src/lecture/domain/entity/lecture";
 import {
-  Entity,
-  PrimaryGeneratedColumn,
   Column,
   CreateDateColumn,
+  Entity,
+  PrimaryGeneratedColumn,
   UpdateDateColumn,
-  VersionColumn,
 } from "typeorm";
 
 @Entity("lectures")
 export class LectureEntity {
-  @VersionColumn()
-  version: number;
-
   @PrimaryGeneratedColumn()
   id: number;
 
@@ -36,7 +32,6 @@ export class LectureEntity {
 
   static fromDomain(domain: Lecture): LectureEntity {
     const entity = new LectureEntity();
-    entity.version = domain.version;
     entity.id = domain.id;
     entity.name = domain.name;
     entity.startAt = domain.startAt;

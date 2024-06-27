@@ -2,6 +2,7 @@ import { Inject, Injectable } from "@nestjs/common";
 import { LectureEnrollmentHistory } from "src/lecture/domain/entity/lecture-enrollment-history";
 import { DataSource, EntityManager } from "typeorm";
 import { Lecture } from "../domain/entity/lecture";
+import { LockMode } from "../domain/enum/lock-mode.enum";
 import { ILectureEnrollmentHistoryRepository } from "../domain/interface/repository/lecture-enrollment-history.repository.interface";
 import { ILectureRepository } from "../domain/interface/repository/lecture.repository.interface";
 import { IEnrollLectureUseCase } from "../domain/interface/usecase/enroll-lecture.usecase.interface";
@@ -115,9 +116,10 @@ export class EnrollLectureUseCase implements IEnrollLectureUseCase {
     dto: EnrollLectureDto,
     entityManger: EntityManager
   ): Promise<Lecture> {
-    const lectureEntity = await this.lectureRepository.findById(
+    const lectureEntity = await this.lectureRepository.findByIdWithLock(
       dto.lectureId,
-      entityManger
+      entityManger,
+      LockMode.PESSIMISTIC_WRITE
     );
     if (!lectureEntity) throw new Error(NOT_EXIST_LECTURE_EXCEPTION_MESSAGE);
     const lecture: Lecture =
