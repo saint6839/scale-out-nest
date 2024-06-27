@@ -1,9 +1,9 @@
 export class EnrollLectureDto {
   readonly userId: number;
-  readonly lectureId: number;
+  readonly lectureDetailId: number;
 
-  constructor(userId: number, lectureId: number) {
+  constructor(userId: number, lectureDetailId: number) {
     this.userId = userId;
-    this.lectureId = lectureId;
+    this.lectureDetailId = lectureDetailId;
   }
 }

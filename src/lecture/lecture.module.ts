@@ -1,10 +1,12 @@
 import { Module } from "@nestjs/common";
 import { TypeOrmModule } from "@nestjs/typeorm";
+import { LectureDetailMapper } from "./domain/mapper/lecture-detail.mapper";
 import { LectureEnrollmentHistoryMapper } from "./domain/mapper/lecture-enrollment-history.mapper";
 import { LectureMapper } from "./domain/mapper/lecture.mapper";
 import { LectureDetailEntity } from "./infrastructure/entity/lecture-detail.entity";
 import { LectureEnrollmentHistoryEntity } from "./infrastructure/entity/lecture-enrollment-history.entity";
 import { LectureEntity } from "./infrastructure/entity/lecture.entity";
+import { LectureDetailRepository } from "./infrastructure/repository/lecture-detail.repository";
 import { LectureEnrollmentHistoryRepository } from "./infrastructure/repository/lecture-enrollment-history.repository";
 import { LectureRepository } from "./infrastructure/repository/lecture.repository";
 import { LectureController } from "./presentation/controller/lecutre.controller";
@@ -31,6 +33,10 @@ import { EnrollLectureUseCase } from "./usecase/enroll-lecture.usecase";
       useClass: LectureEnrollmentHistoryRepository,
     },
     {
+      provide: LectureDetailRepository.name,
+      useClass: LectureDetailRepository,
+    },
+    {
       provide: CreateLectureUseCase.name,
       useClass: CreateLectureUseCase,
     },
@@ -48,6 +54,7 @@ import { EnrollLectureUseCase } from "./usecase/enroll-lecture.usecase";
     },
     LectureMapper,
     LectureEnrollmentHistoryMapper,
+    LectureDetailMapper,
   ],
   controllers: [LectureController],
 })

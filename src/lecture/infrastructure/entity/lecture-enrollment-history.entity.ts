@@ -1,19 +1,19 @@
 import { LectureEnrollmentHistory } from "src/lecture/domain/entity/lecture-enrollment-history";
 import {
-  Entity,
-  PrimaryGeneratedColumn,
   Column,
   CreateDateColumn,
+  Entity,
+  PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from "typeorm";
 
-@Entity("lecture_application_histories")
+@Entity("lecture_enrollments_histories")
 export class LectureEnrollmentHistoryEntity {
   @PrimaryGeneratedColumn()
   id: number;
 
   @Column()
-  lectureId: number;
+  lectureDetailId: number;
 
   @Column()
   userId: number;
@@ -29,7 +29,7 @@ export class LectureEnrollmentHistoryEntity {
   ): LectureEnrollmentHistoryEntity {
     const entity = new LectureEnrollmentHistoryEntity();
     entity.id = domain.id;
-    entity.lectureId = domain.lectureId;
+    entity.lectureDetailId = domain.lectureId;
     entity.userId = domain.userId;
     entity.createdAt = domain.createdAt;
     entity.updatedAt = domain.updatedAt;

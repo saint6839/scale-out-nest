@@ -3,17 +3,20 @@ export const CANT_ENROLL_TIME_EXCEPTION_MESSAGE = "수강 신청 시간이 아�
 
 export class LectureDetail {
   private _id: number;
+  private _lectureId: number;
   private _startAt: Date;
   private _capacity: number;
   private _currentEnrollment: number;
 
   constructor(
     id: number,
+    lectureId: number,
     startAt: Date,
     capacity: number,
     currentEnrollment: number
   ) {
     this._id = id;
+    this._lectureId = lectureId;
     this._startAt = startAt;
     this._capacity = capacity;
     this._currentEnrollment = currentEnrollment;
@@ -21,6 +24,10 @@ export class LectureDetail {
 
   get id(): number {
     return this._id;
+  }
+
+  get lectureId(): number {
+    return this._lectureId;
   }
 
   get startAt(): Date {

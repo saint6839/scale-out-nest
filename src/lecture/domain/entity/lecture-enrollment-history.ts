@@ -1,19 +1,19 @@
 export class LectureEnrollmentHistory {
   private _id: number;
-  private _lectureId: number;
+  private _lectureDetailId: number;
   private _userId: number;
   private _createdAt: Date;
   private _updatedAt: Date;
 
   constructor(
     id: number,
-    lectureId: number,
+    lectureDetailId: number,
     userId: number,
     createdAt?: Date,
     updatedAt?: Date
   ) {
     this._id = id;
-    this._lectureId = lectureId;
+    this._lectureDetailId = lectureDetailId;
     this._userId = userId;
     this._createdAt = createdAt;
     this._updatedAt = updatedAt;
@@ -24,7 +24,7 @@ export class LectureEnrollmentHistory {
   }
 
   get lectureId(): number {
-    return this._lectureId;
+    return this._lectureDetailId;
   }
 
   get userId(): number {
@@ -39,7 +39,10 @@ export class LectureEnrollmentHistory {
     return this._updatedAt;
   }
 
-  static create(lectureId: number, userId: number): LectureEnrollmentHistory {
-    return new LectureEnrollmentHistory(0, lectureId, userId);
+  static create(
+    lectureDetailId: number,
+    userId: number
+  ): LectureEnrollmentHistory {
+    return new LectureEnrollmentHistory(0, lectureDetailId, userId);
   }
 }

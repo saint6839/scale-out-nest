@@ -22,6 +22,7 @@ export class LectureEnrollmentHistoryRepository
       where: { userId },
     });
   }
+
   async create(
     lectureApplicationHistory: LectureEnrollmentHistory,
     entityManager: EntityManager
@@ -45,7 +46,7 @@ export class LectureEnrollmentHistoryRepository
     entityManager: EntityManager
   ): Promise<LectureEnrollmentHistoryEntity> {
     return await entityManager.findOne(LectureEnrollmentHistoryEntity, {
-      where: { lectureId, userId },
+      where: { lectureDetailId: lectureId, userId },
     });
   }
 }

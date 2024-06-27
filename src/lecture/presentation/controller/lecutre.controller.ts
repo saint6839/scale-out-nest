@@ -47,9 +47,7 @@ export class LectureController {
   }
 
   @Post("/enrollments")
-  async enroll(
-    @Body() dto: EnrollLectureDto
-  ): Promise<ApiResponseDto<LectureDto>> {
+  async enroll(@Body() dto: EnrollLectureDto): Promise<ApiResponseDto<void>> {
     return new ApiResponseDto(
       true,
       "강의 등록 성공",

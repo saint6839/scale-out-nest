@@ -13,7 +13,7 @@ import { LectureDto } from "src/lecture/presentation/dto/response/lecture.dto";
 import {
   ALREADY_ENROLLED_LECTURE_EXCEPTION_MESSAGE,
   EnrollLectureUseCase,
-  NOT_EXIST_LECTURE_EXCEPTION_MESSAGE,
+  NOT_EXIST_LECTURE_DETAIL_EXCEPTION_MESSAGE,
 } from "src/lecture/usecase/enroll-lecture.usecase";
 import { DataSource, EntityManager } from "typeorm";
 
@@ -172,7 +172,7 @@ describe("EnrollLectureUseCase", () => {
 
       // when & then
       await expect(useCase.execute(dto)).rejects.toThrow(
-        NOT_EXIST_LECTURE_EXCEPTION_MESSAGE
+        NOT_EXIST_LECTURE_DETAIL_EXCEPTION_MESSAGE
       );
     });
 

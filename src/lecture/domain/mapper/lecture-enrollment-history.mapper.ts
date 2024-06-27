@@ -1,6 +1,6 @@
 import { Injectable } from "@nestjs/common";
-import { LectureEnrollmentHistory } from "../entity/lecture-enrollment-history";
 import { LectureEnrollmentHistoryEntity } from "src/lecture/infrastructure/entity/lecture-enrollment-history.entity";
+import { LectureEnrollmentHistory } from "../entity/lecture-enrollment-history";
 
 @Injectable()
 export class LectureEnrollmentHistoryMapper {
@@ -10,7 +10,7 @@ export class LectureEnrollmentHistoryMapper {
     return entity
       ? new LectureEnrollmentHistory(
           entity.id,
-          entity.lectureId,
+          entity.lectureDetailId,
           entity.userId,
           entity.createdAt,
           entity.updatedAt

@@ -1,11 +1,14 @@
 import { Inject, Injectable } from "@nestjs/common";
 import { DataSource, EntityManager } from "typeorm";
 import { LectureEnrollmentHistory } from "../domain/entity/lecture-enrollment-history";
+import { ILectureDetailRepository } from "../domain/interface/repository/lecture-deteail.repository.interface";
 import { ILectureEnrollmentHistoryRepository } from "../domain/interface/repository/lecture-enrollment-history.repository.interface";
 import { ILectureRepository } from "../domain/interface/repository/lecture.repository.interface";
 import { IBrowseLectureEnrollmentHistoriesUseCase } from "../domain/interface/usecase/browse-lecture-enrollment-histories.usecase.inteface";
+import { LectureDetailMapper } from "../domain/mapper/lecture-detail.mapper";
 import { LectureEnrollmentHistoryMapper } from "../domain/mapper/lecture-enrollment-history.mapper";
 import { LectureMapper } from "../domain/mapper/lecture.mapper";
+import { LectureDetailRepository } from "../infrastructure/repository/lecture-detail.repository";
 import { LectureEnrollmentHistoryRepository } from "../infrastructure/repository/lecture-enrollment-history.repository";
 import { LectureRepository } from "../infrastructure/repository/lecture.repository";
 import { BrowseLectureEnrollmentHistoriesDto } from "../presentation/dto/request/browse-lecture-enrollment-histories.dto";
@@ -23,8 +26,11 @@ export class BrowseLectureEnrollmentHistoriesUseCase
     private readonly lectureRepository: ILectureRepository,
     @Inject(LectureEnrollmentHistoryRepository.name)
     private readonly lectureEnrollmentHistory: ILectureEnrollmentHistoryRepository,
+    @Inject(LectureDetailRepository.name)
+    private readonly lectureDetailRepository: ILectureDetailRepository,
     private readonly lectureMapper: LectureMapper,
     private readonly lectureEnrollmentHistoryMapper: LectureEnrollmentHistoryMapper,
+    private readonly lectureDetailMapper: LectureDetailMapper,
     private readonly dataSource: DataSource
   ) {}
 
@@ -71,7 +77,15 @@ export class BrowseLectureEnrollmentHistoriesUseCase
           entityManager
         );
         const lecture = this.lectureMapper.toDomainFromEntity(lectureEntity);
-        return this.lectureMapper.toDtoFromDomain(lecture);
+
+        const lectureDetailEntities =
+          await this.lectureDetailRepository.findByLectureId(lecture.id);
+
+        const lectureDetails = lectureDetailEntities.map((entity) =>
+          this.lectureDetailMapper.toDomainFromEntity(entity)
+        );
+
+        return this.lectureMapper.toDtoFromDomain(lecture, lectureDetails);
       })
     );
   }

@@ -1,18 +1,21 @@
 import { Inject, Injectable } from "@nestjs/common";
 import { LectureEnrollmentHistory } from "src/lecture/domain/entity/lecture-enrollment-history";
 import { DataSource, EntityManager } from "typeorm";
-import { Lecture } from "../domain/entity/lecture";
+import { LectureDetail } from "../domain/entity/lecture-detail";
 import { LockMode } from "../domain/enum/lock-mode.enum";
+import { ILectureDetailRepository } from "../domain/interface/repository/lecture-deteail.repository.interface";
 import { ILectureEnrollmentHistoryRepository } from "../domain/interface/repository/lecture-enrollment-history.repository.interface";
 import { ILectureRepository } from "../domain/interface/repository/lecture.repository.interface";
 import { IEnrollLectureUseCase } from "../domain/interface/usecase/enroll-lecture.usecase.interface";
+import { LectureDetailMapper } from "../domain/mapper/lecture-detail.mapper";
+import { LectureDetailRepository } from "../infrastructure/repository/lecture-detail.repository";
 import { LectureEnrollmentHistoryRepository } from "../infrastructure/repository/lecture-enrollment-history.repository";
 import { LectureRepository } from "../infrastructure/repository/lecture.repository";
 import { EnrollLectureDto } from "../presentation/dto/request/enroll-lecture.dto";
-import { LectureDto } from "../presentation/dto/response/lecture.dto";
 import { LectureMapper } from "./../domain/mapper/lecture.mapper";
 
-export const NOT_EXIST_LECTURE_EXCEPTION_MESSAGE = "존재하지 않는 강의 입니다";
+export const NOT_EXIST_LECTURE_DETAIL_EXCEPTION_MESSAGE =
+  "신청 불가능한 강의 입니다";
 export const ALREADY_ENROLLED_LECTURE_EXCEPTION_MESSAGE =
   "이미 수강신청한 강의 입니다";
 
@@ -22,8 +25,11 @@ export class EnrollLectureUseCase implements IEnrollLectureUseCase {
     @Inject(LectureRepository.name)
     private readonly lectureRepository: ILectureRepository,
     @Inject(LectureEnrollmentHistoryRepository.name)
-    private readonly lectureApplicationHistory: ILectureEnrollmentHistoryRepository,
+    private readonly lectureEnrollmentHistory: ILectureEnrollmentHistoryRepository,
+    @Inject(LectureDetailRepository.name)
+    private readonly lectureDetailRepository: ILectureDetailRepository,
     private readonly lectureMapper: LectureMapper,
+    private readonly lectureDetailMapper: LectureDetailMapper,
     private readonly dataSource: DataSource
   ) {}
 
@@ -33,35 +39,32 @@ export class EnrollLectureUseCase implements IEnrollLectureUseCase {
    * @param dto userId, lectureId
    * @returns LectureDto
    */
-  async execute(dto: EnrollLectureDto): Promise<LectureDto> {
+  async execute(dto: EnrollLectureDto): Promise<void> {
     return await this.dataSource.transaction(
       async (entityManger: EntityManager) => {
-        const lecture = await this.findLecture(dto, entityManger);
+        const lectureDetail = await this.findLectureDetail(dto, entityManger);
         await this.validateExistLectureEnrollmentHistory(dto, entityManger);
         await this.enrollLecture(dto, entityManger);
-        return await this.increaseLectureEnrollmentCount(lecture, entityManger);
+        return await this.increaseLectureEnrollmentCount(
+          lectureDetail,
+          entityManger
+        );
       }
     );
   }
 
   /**
    * @description 강의의 수강 인원을 증가시키는 함수
-   * @param lecture
+   * @param lectureDetail
    * @param entityManger
    * @returns LectureDto
    */
   private async increaseLectureEnrollmentCount(
-    lecture: Lecture,
+    lectureDetail: LectureDetail,
     entityManger: EntityManager
-  ) {
-    // lecture.increaseEnrollment();
-    const updatedLectureEntity = await this.lectureRepository.update(
-      lecture,
-      entityManger
-    );
-    const updatedLecture =
-      this.lectureMapper.toDomainFromEntity(updatedLectureEntity);
-    return this.lectureMapper.toDtoFromDomain(updatedLecture);
+  ): Promise<void> {
+    lectureDetail.increaseEnrollment();
+    await this.lectureDetailRepository.update(lectureDetail, entityManger);
   }
 
   /**
@@ -74,10 +77,10 @@ export class EnrollLectureUseCase implements IEnrollLectureUseCase {
     entityManger: EntityManager
   ) {
     const lectureEnrollmentHistory = LectureEnrollmentHistory.create(
-      dto.lectureId,
+      dto.lectureDetailId,
       dto.userId
     );
-    await this.lectureApplicationHistory.create(
+    await this.lectureEnrollmentHistory.create(
       lectureEnrollmentHistory,
       entityManger
     );
@@ -94,8 +97,8 @@ export class EnrollLectureUseCase implements IEnrollLectureUseCase {
     entityManger: EntityManager
   ): Promise<void> {
     const existLectureApplicationHistoryEntity =
-      await this.lectureApplicationHistory.findByLectureIdAndUserId(
-        dto.lectureId,
+      await this.lectureEnrollmentHistory.findByLectureIdAndUserId(
+        dto.lectureDetailId,
         dto.userId,
         entityManger
       );
@@ -112,20 +115,23 @@ export class EnrollLectureUseCase implements IEnrollLectureUseCase {
    * @param entityManger
    * @returns Lecture
    */
-  private async findLecture(
+  private async findLectureDetail(
     dto: EnrollLectureDto,
     entityManger: EntityManager
-  ): Promise<Lecture> {
-    const lectureEntity = await this.lectureRepository.findByIdWithLock(
-      dto.lectureId,
-      entityManger,
-      LockMode.PESSIMISTIC_WRITE
-    );
-    if (!lectureEntity) throw new Error(NOT_EXIST_LECTURE_EXCEPTION_MESSAGE);
-    const lecture: Lecture =
-      this.lectureMapper.toDomainFromEntity(lectureEntity);
+  ): Promise<LectureDetail> {
+    const lectureDetailEntity =
+      await this.lectureDetailRepository.findByIdWithLock(
+        dto.lectureDetailId,
+        entityManger,
+        LockMode.PESSIMISTIC_WRITE
+      );
 
-    // lecture.validateEnrollStartAt(new Date());
-    return lecture;
+    if (!lectureDetailEntity)
+      throw new Error(NOT_EXIST_LECTURE_DETAIL_EXCEPTION_MESSAGE);
+    const lectureDetail =
+      this.lectureDetailMapper.toDomainFromEntity(lectureDetailEntity);
+
+    lectureDetail.validateEnrollStartAt(new Date());
+    return lectureDetail;
   }
 }
