@@ -33,23 +33,29 @@ describe("EnrollLectureUseCase", () => {
       providers: [
         EnrollLectureUseCase,
         {
-          provide: LectureRepository.name,
+          provide: "ILectureRepository",
           useValue: {
             findById: jest.fn(),
           },
         },
         {
-          provide: LectureEnrollmentHistoryRepository.name,
+          provide: "ILectureEnrollmentHistoryRepository",
           useValue: {
             findByLectureDetailIdAndUserId: jest.fn(),
             create: jest.fn(),
           },
         },
         {
-          provide: LectureDetailRepository.name,
+          provide: "ILectureDetailRepository",
           useValue: {
             findByIdWithLock: jest.fn(),
             update: jest.fn(),
+          },
+        },
+        {
+          provide: "IUserValidator",
+          useValue: {
+            validateUserExists: jest.fn(),
           },
         },
         {
@@ -75,11 +81,11 @@ describe("EnrollLectureUseCase", () => {
 
     enrollLectureUseCase =
       module.get<EnrollLectureUseCase>(EnrollLectureUseCase);
-    lectureRepositoryMock = module.get(LectureRepository.name);
+    lectureRepositoryMock = module.get("ILectureRepository");
     lectureEnrollmentHistoryRepositoryMock = module.get(
-      LectureEnrollmentHistoryRepository.name
+      "ILectureEnrollmentHistoryRepository"
     );
-    lectureDetailRepositoryMock = module.get(LectureDetailRepository.name);
+    lectureDetailRepositoryMock = module.get("ILectureDetailRepository");
     lectureMapperMock = module.get(LectureMapper);
     lectureDetailMapperMock = module.get(LectureDetailMapper);
     dataSourceMock = module.get(DataSource);
