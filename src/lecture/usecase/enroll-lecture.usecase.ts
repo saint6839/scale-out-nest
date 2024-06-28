@@ -88,7 +88,7 @@ export class EnrollLectureUseCase implements IEnrollLectureUseCase {
 
   /**
    * @description 이미 수강 신청한 이력이 있는지 확인하는 함수
-   * @throws {Error} 존재하는 강의가 없다면 예외를 발f생시킨다.
+   * @throws {Error} 이미 수강 신청한 이력이 있다면 예외를 발생시킨다.
    * @param dto
    * @param entityManger
    */
