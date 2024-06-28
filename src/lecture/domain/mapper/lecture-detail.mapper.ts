@@ -10,6 +10,7 @@ export class LectureDetailMapper {
           entity.id,
           entity.lectureId,
           entity.enrollAt,
+          entity.lectureAt,
           entity.capacity,
           entity.currentEnrollment
         )

@@ -12,6 +12,9 @@ export class LectureDetailEntity {
   @Column({ type: "timestamp" })
   enrollAt: Date;
 
+  @Column({ type: "timestamp" })
+  lectureAt: Date;
+
   @Column()
   capacity: number;
 
@@ -22,6 +25,7 @@ export class LectureDetailEntity {
     const entity = new LectureDetailEntity();
     entity.id = domain.id;
     entity.enrollAt = domain.enrollAt;
+    entity.lectureAt = domain.lectureAt;
     entity.capacity = domain.capacity;
     entity.currentEnrollment = domain.currentEnrollment;
     return entity;

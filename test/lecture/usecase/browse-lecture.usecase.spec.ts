@@ -111,7 +111,14 @@ describe("BrowseLectureUseCase", () => {
         } as LectureDetailEntity,
       ];
       const mockLecture = new Lecture(1, "테스트 강의");
-      const mockLectureDetail = new LectureDetail(1, 1, new Date(), 10, 5);
+      const mockLectureDetail = new LectureDetail(
+        1,
+        1,
+        new Date(),
+        new Date(),
+        10,
+        5
+      );
       const mockLectureDto: LectureDto = {
         id: 1,
         name: "테스트 강의",
@@ -119,6 +126,7 @@ describe("BrowseLectureUseCase", () => {
           {
             id: 1,
             enrollAt: new Date(),
+            lectureAt: new Date(),
             capacity: 10,
             currentEnrollment: 5,
           } as LectureDetailDto,
@@ -171,6 +179,103 @@ describe("BrowseLectureUseCase", () => {
       expect(
         lectureDetailRepositoryMock.findByLectureId
       ).not.toHaveBeenCalled();
+    });
+
+    it("한 강의에 여러개의 강의 상세 일정이 존재할 경우 강의 상세 일정을 모두 반환해야 한다", async () => {
+      // given
+      const mockLectureEntities = [
+        { id: 1, name: "테스트 강의" } as LectureEntity,
+      ];
+      const mockLectureDetailEntities = [
+        {
+          id: 1,
+          lectureId: 1,
+          enrollAt: new Date(),
+          capacity: 10,
+          currentEnrollment: 5,
+        } as LectureDetailEntity,
+        {
+          id: 2,
+          lectureId: 1,
+          enrollAt: new Date(),
+          capacity: 10,
+          currentEnrollment: 5,
+        } as LectureDetailEntity,
+      ];
+      const mockLecture = new Lecture(1, "테스트 강의");
+      const mockLectureDetail1 = new LectureDetail(
+        1,
+        1,
+        new Date(),
+        new Date(),
+        10,
+        5
+      );
+      const mockLectureDetail2 = new LectureDetail(
+        2,
+        1,
+        new Date(),
+        new Date(),
+        10,
+        5
+      );
+      const mockLectureDto: LectureDto = {
+        id: 1,
+        name: "테스트 강의",
+        lectureDetails: [
+          {
+            id: 1,
+            enrollAt: new Date(),
+            lectureAt: new Date(),
+            capacity: 10,
+            currentEnrollment: 5,
+          } as LectureDetailDto,
+          {
+            id: 2,
+            enrollAt: new Date(),
+            lectureAt: new Date(),
+            capacity: 10,
+            currentEnrollment: 5,
+          } as LectureDetailDto,
+        ],
+        createdAt: new Date(),
+        updatedAt: new Date(),
+      };
+      lectureRepositoryMock.findAll.mockResolvedValue(mockLectureEntities);
+      lectureDetailRepositoryMock.findByLectureId.mockResolvedValue(
+        mockLectureDetailEntities
+      );
+      lectureMapperMock.toDomainFromEntity.mockReturnValue(mockLecture);
+      lectureDetailMapperMock.toDomainFromEntity.mockReturnValueOnce(
+        mockLectureDetail1
+      );
+      lectureDetailMapperMock.toDomainFromEntity.mockReturnValueOnce(
+        mockLectureDetail2
+      );
+      lectureMapperMock.toDtoFromDomain.mockReturnValue(mockLectureDto);
+
+      // when
+      const result = await browseLecturesUseCase.execute();
+
+      // then
+      expect(result).toEqual([mockLectureDto]);
+      expect(lectureRepositoryMock.findAll).toHaveBeenCalledTimes(1);
+      expect(lectureDetailRepositoryMock.findByLectureId).toHaveBeenCalledWith(
+        1
+      );
+      expect(lectureMapperMock.toDomainFromEntity).toHaveBeenCalledWith(
+        mockLectureEntities[0]
+      );
+      expect(lectureDetailMapperMock.toDomainFromEntity).toHaveBeenCalledWith(
+        mockLectureDetailEntities[0]
+      );
+      expect(lectureDetailMapperMock.toDomainFromEntity).toHaveBeenCalledWith(
+        mockLectureDetailEntities[1]
+      );
+      expect(lectureMapperMock.toDtoFromDomain).toHaveBeenCalledWith(
+        mockLecture,
+        [mockLectureDetail1, mockLectureDetail2]
+      );
     });
   });
 });

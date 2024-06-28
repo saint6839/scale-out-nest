@@ -99,6 +99,7 @@ describe("EnrollLectureUseCase", () => {
           id: index + 1,
           lectureId: index + 1,
           enrollAt: new Date(),
+          lectureAt: new Date(),
           capacity: capacityPerLecture,
           currentEnrollment: initialEnrollment,
         }));
@@ -120,6 +121,7 @@ describe("EnrollLectureUseCase", () => {
             entity.id,
             entity.lectureId,
             entity.enrollAt,
+            entity.lectureAt,
             entity.capacity,
             entity.currentEnrollment
           );
@@ -173,6 +175,7 @@ describe("EnrollLectureUseCase", () => {
         id: 1,
         lectureId: 1,
         enrollAt: new Date(),
+        lectureAt: new Date(),
         capacity: capacity,
         currentEnrollment: currentEnrollment,
       };
@@ -193,6 +196,7 @@ describe("EnrollLectureUseCase", () => {
             entity.id,
             entity.lectureId,
             entity.enrollAt,
+            entity.lectureAt,
             entity.capacity,
             entity.currentEnrollment
           );
@@ -246,10 +250,18 @@ describe("EnrollLectureUseCase", () => {
         id: 1,
         lectureId: 1,
         enrollAt: new Date(),
+        lectureAt: new Date(),
         capacity: 10,
         currentEnrollment: 5,
       };
-      const lectureDetail = new LectureDetail(1, 1, new Date(), 10, 5);
+      const lectureDetail = new LectureDetail(
+        1,
+        1,
+        new Date(),
+        new Date(),
+        10,
+        5
+      );
 
       lectureDetailRepositoryMock.findByIdWithLock.mockResolvedValue(
         lectureDetailEntity
@@ -303,10 +315,18 @@ describe("EnrollLectureUseCase", () => {
         id: 1,
         lectureId: 1,
         enrollAt: new Date(),
+        lectureAt: new Date(),
         capacity: 10,
         currentEnrollment: 5,
       };
-      const lectureDetail = new LectureDetail(1, 1, new Date(), 10, 5);
+      const lectureDetail = new LectureDetail(
+        1,
+        1,
+        new Date(),
+        new Date(),
+        10,
+        5
+      );
 
       lectureDetailRepositoryMock.findByIdWithLock.mockResolvedValue(
         lectureDetailEntity
@@ -333,10 +353,18 @@ describe("EnrollLectureUseCase", () => {
         id: 1,
         lectureId: 1,
         enrollAt: futureDate,
+        lectureAt: futureDate,
         capacity: 10,
         currentEnrollment: 5,
       };
-      const lectureDetail = new LectureDetail(1, 1, futureDate, 10, 5);
+      const lectureDetail = new LectureDetail(
+        1,
+        1,
+        futureDate,
+        futureDate,
+        10,
+        5
+      );
 
       lectureDetailRepositoryMock.findByIdWithLock.mockResolvedValue(
         lectureDetailEntity
@@ -359,10 +387,18 @@ describe("EnrollLectureUseCase", () => {
         id: 1,
         lectureId: 1,
         enrollAt: new Date(),
+        lectureAt: new Date(),
         capacity: 10,
         currentEnrollment: 10,
       };
-      const lectureDetail = new LectureDetail(1, 1, new Date(), 10, 10);
+      const lectureDetail = new LectureDetail(
+        1,
+        1,
+        new Date(),
+        new Date(),
+        10,
+        10
+      );
 
       lectureDetailRepositoryMock.findByIdWithLock.mockResolvedValue(
         lectureDetailEntity
@@ -385,10 +421,18 @@ describe("EnrollLectureUseCase", () => {
         id: 1,
         lectureId: 1,
         enrollAt: new Date(),
+        lectureAt: new Date(),
         capacity: 10,
         currentEnrollment: 5,
       };
-      const lectureDetail = new LectureDetail(1, 1, new Date(), 10, 5);
+      const lectureDetail = new LectureDetail(
+        1,
+        1,
+        new Date(),
+        new Date(),
+        10,
+        5
+      );
 
       lectureDetailRepositoryMock.findByIdWithLock.mockResolvedValue(
         lectureDetailEntity

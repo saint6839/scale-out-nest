@@ -5,6 +5,7 @@ export class LectureDetail {
   private _id: number;
   private _lectureId: number;
   private _enrollAt: Date;
+  private _lectureAt: Date;
   private _capacity: number;
   private _currentEnrollment: number;
 
@@ -12,12 +13,14 @@ export class LectureDetail {
     id: number,
     lectureId: number,
     enrollAt: Date,
+    lectureAt: Date,
     capacity: number,
     currentEnrollment: number
   ) {
     this._id = id;
     this._lectureId = lectureId;
     this._enrollAt = enrollAt;
+    this._lectureAt = lectureAt;
     this._capacity = capacity;
     this._currentEnrollment = currentEnrollment;
   }
@@ -32,6 +35,10 @@ export class LectureDetail {
 
   get enrollAt(): Date {
     return this._enrollAt;
+  }
+
+  get lectureAt(): Date {
+    return this._lectureAt;
   }
 
   get capacity(): number {

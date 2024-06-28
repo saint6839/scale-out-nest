@@ -21,6 +21,7 @@ export class LectureMapper {
                 lectureDetail.id,
                 lectureDetail.lectureId,
                 lectureDetail.enrollAt,
+                lectureDetail.lectureAt,
                 lectureDetail.capacity,
                 lectureDetail.currentEnrollment
               )
