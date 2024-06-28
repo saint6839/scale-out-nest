@@ -23,13 +23,13 @@ describe("BrowseLectureUseCase", () => {
       providers: [
         BrowseLecturesUseCase,
         {
-          provide: LectureRepository.name,
+          provide: "ILectureRepository",
           useValue: {
             findAll: jest.fn(),
           },
         },
         {
-          provide: LectureDetailRepository.name,
+          provide: "ILectureDetailRepository",
           useValue: {
             findByLectureId: jest.fn(),
           },
@@ -53,8 +53,8 @@ describe("BrowseLectureUseCase", () => {
     browseLecturesUseCase = module.get<BrowseLecturesUseCase>(
       BrowseLecturesUseCase
     );
-    lectureRepositoryMock = module.get(LectureRepository.name);
-    lectureDetailRepositoryMock = module.get(LectureDetailRepository.name);
+    lectureRepositoryMock = module.get("ILectureRepository");
+    lectureDetailRepositoryMock = module.get("ILectureDetailRepository");
     lectureMapperMock = module.get(LectureMapper);
     lectureDetailMapperMock = module.get(LectureDetailMapper);
   });
