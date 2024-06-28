@@ -54,7 +54,7 @@ export class EnrollLectureUseCase implements IEnrollLectureUseCase {
   }
 
   /**
-   * @description 강의의 수강 인원을 증가시키는 함수
+   * @description 특정 강의 상세 일정의 수강 인원을 증가시키는 함수
    * @param lectureDetail
    * @param entityManger
    * @returns LectureDto
