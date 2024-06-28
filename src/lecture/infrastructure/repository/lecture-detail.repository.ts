@@ -12,6 +12,14 @@ export class LectureDetailRepository implements ILectureDetailRepository {
     @InjectRepository(LectureDetailEntity)
     private readonly repository: Repository<LectureDetailEntity>
   ) {}
+
+  async findById(
+    id: number,
+    entityManager: EntityManager
+  ): Promise<LectureDetailEntity> {
+    return await entityManager.findOne(LectureDetailEntity, { where: { id } });
+  }
+
   async findByIdWithLock(
     id: number,
     entityManager: EntityManager,

@@ -18,5 +18,10 @@ export interface ILectureDetailRepository {
     entityManager: EntityManager
   ): Promise<LectureDetailEntity>;
 
+  findById(
+    id: number,
+    entityManager: EntityManager
+  ): Promise<LectureDetailEntity>;
+
   findByLectureId(lectureId: number): Promise<LectureDetailEntity[]>;
 }

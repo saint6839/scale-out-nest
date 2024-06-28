@@ -29,7 +29,7 @@ export class LectureEnrollmentHistoryEntity {
   ): LectureEnrollmentHistoryEntity {
     const entity = new LectureEnrollmentHistoryEntity();
     entity.id = domain.id;
-    entity.lectureDetailId = domain.lectureId;
+    entity.lectureDetailId = domain.lectureDetailId;
     entity.userId = domain.userId;
     entity.createdAt = domain.createdAt;
     entity.updatedAt = domain.updatedAt;

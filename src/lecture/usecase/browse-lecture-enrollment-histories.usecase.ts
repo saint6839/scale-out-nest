@@ -1,5 +1,7 @@
 import { Inject, Injectable } from "@nestjs/common";
 import { DataSource, EntityManager } from "typeorm";
+import { Lecture } from "../domain/entity/lecture";
+import { LectureDetail } from "../domain/entity/lecture-detail";
 import { LectureEnrollmentHistory } from "../domain/entity/lecture-enrollment-history";
 import { ILectureDetailRepository } from "../domain/interface/repository/lecture-deteail.repository.interface";
 import { ILectureEnrollmentHistoryRepository } from "../domain/interface/repository/lecture-enrollment-history.repository.interface";
@@ -67,23 +69,54 @@ export class BrowseLectureEnrollmentHistoriesUseCase
     histories: LectureEnrollmentHistory[],
     entityManager: EntityManager
   ): Promise<LectureDto[]> {
-    return await Promise.all(
-      histories.map(async (history) => {
-        const lectureEntity = await this.lectureRepository.findById(
-          history.lectureId,
-          entityManager
-        );
-        const lecture = this.lectureMapper.toDomainFromEntity(lectureEntity);
+    const lectureMap = new Map<number, LectureDto>();
 
-        const lectureDetailEntities =
-          await this.lectureDetailRepository.findByLectureId(lecture.id);
+    for (const history of histories) {
+      const { lecture, lectureDetail } = await this.fetchLectureAndDetail(
+        history,
+        entityManager
+      );
 
-        const lectureDetails = lectureDetailEntities.map((entity) =>
-          this.lectureDetailMapper.toDomainFromEntity(entity)
-        );
+      const lectureDomain = this.lectureMapper.toDomainFromEntity(lecture);
+      const lectureDetailDomain =
+        this.lectureDetailMapper.toDomainFromEntity(lectureDetail);
 
-        return this.lectureMapper.toDtoFromDomain(lecture, lectureDetails);
-      })
+      this.updateLectureMap(lectureMap, lectureDomain, lectureDetailDomain);
+    }
+
+    return Array.from(lectureMap.values());
+  }
+
+  private async fetchLectureAndDetail(
+    history: LectureEnrollmentHistory,
+    entityManager: EntityManager
+  ) {
+    const lectureDetail = await this.lectureDetailRepository.findById(
+      history.lectureDetailId,
+      entityManager
     );
+    const lecture = await this.lectureRepository.findById(
+      lectureDetail.lectureId,
+      entityManager
+    );
+    return { lecture, lectureDetail };
+  }
+
+  private updateLectureMap(
+    lectureMap: Map<number, LectureDto>,
+    lectureDomain: Lecture,
+    lectureDetailDomain: LectureDetail
+  ) {
+    if (!lectureMap.has(lectureDomain.id)) {
+      const lectureDto = this.lectureMapper.toDtoFromDomain(lectureDomain, [
+        lectureDetailDomain,
+      ]);
+      lectureMap.set(lectureDomain.id, lectureDto);
+    } else {
+      const existingLectureDto = lectureMap.get(lectureDomain.id);
+      existingLectureDto.lectureDetails.push(
+        this.lectureDetailMapper.toDtoFromDomain(lectureDetailDomain)
+      );
+    }
   }
 }

@@ -23,7 +23,7 @@ export class LectureEnrollmentHistory {
     return this._id;
   }
 
-  get lectureId(): number {
+  get lectureDetailId(): number {
     return this._lectureDetailId;
   }
 
