@@ -13,7 +13,7 @@ export interface ILectureEnrollmentHistoryRepository {
     entityManager: EntityManager
   ): Promise<LectureEnrollmentHistoryEntity>;
 
-  findByLectureIdAndUserId(
+  findByLectureDetailIdAndUserId(
     lectureId: number,
     userId: number,
     entityManager: EntityManager

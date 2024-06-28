@@ -40,13 +40,13 @@ export class LectureEnrollmentHistoryRepository
     throw new Error("Method not implemented.");
   }
 
-  async findByLectureIdAndUserId(
-    lectureId: number,
+  async findByLectureDetailIdAndUserId(
+    lectureDetailId: number,
     userId: number,
     entityManager: EntityManager
   ): Promise<LectureEnrollmentHistoryEntity> {
     return await entityManager.findOne(LectureEnrollmentHistoryEntity, {
-      where: { lectureDetailId: lectureId, userId },
+      where: { lectureDetailId: lectureDetailId, userId },
     });
   }
 }

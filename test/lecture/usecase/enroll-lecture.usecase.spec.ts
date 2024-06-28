@@ -41,7 +41,7 @@ describe("EnrollLectureUseCase", () => {
         {
           provide: LectureEnrollmentHistoryRepository.name,
           useValue: {
-            findByLectureIdAndUserId: jest.fn(),
+            findByLectureDetailIdAndUserId: jest.fn(),
             create: jest.fn(),
           },
         },
@@ -128,7 +128,7 @@ describe("EnrollLectureUseCase", () => {
         }
       );
 
-      lectureEnrollmentHistoryRepositoryMock.findByLectureIdAndUserId.mockResolvedValue(
+      lectureEnrollmentHistoryRepositoryMock.findByLectureDetailIdAndUserId.mockResolvedValue(
         null
       );
 
@@ -203,7 +203,7 @@ describe("EnrollLectureUseCase", () => {
         }
       );
 
-      lectureEnrollmentHistoryRepositoryMock.findByLectureIdAndUserId.mockResolvedValue(
+      lectureEnrollmentHistoryRepositoryMock.findByLectureDetailIdAndUserId.mockResolvedValue(
         null
       );
 
@@ -267,7 +267,7 @@ describe("EnrollLectureUseCase", () => {
         lectureDetailEntity
       );
       lectureDetailMapperMock.toDomainFromEntity.mockReturnValue(lectureDetail);
-      lectureEnrollmentHistoryRepositoryMock.findByLectureIdAndUserId.mockResolvedValue(
+      lectureEnrollmentHistoryRepositoryMock.findByLectureDetailIdAndUserId.mockResolvedValue(
         null
       );
       dataSourceMock.transaction.mockImplementation(
@@ -284,7 +284,7 @@ describe("EnrollLectureUseCase", () => {
         LockMode.PESSIMISTIC_WRITE
       );
       expect(
-        lectureEnrollmentHistoryRepositoryMock.findByLectureIdAndUserId
+        lectureEnrollmentHistoryRepositoryMock.findByLectureDetailIdAndUserId
       ).toHaveBeenCalledWith(
         lectureDetail.lectureId,
         dto.userId,
@@ -332,7 +332,7 @@ describe("EnrollLectureUseCase", () => {
         lectureDetailEntity
       );
       lectureDetailMapperMock.toDomainFromEntity.mockReturnValue(lectureDetail);
-      lectureEnrollmentHistoryRepositoryMock.findByLectureIdAndUserId.mockResolvedValue(
+      lectureEnrollmentHistoryRepositoryMock.findByLectureDetailIdAndUserId.mockResolvedValue(
         {} as LectureEnrollmentHistoryEntity
       );
       dataSourceMock.transaction.mockImplementation(

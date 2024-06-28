@@ -102,8 +102,8 @@ export class EnrollLectureUseCase implements IEnrollLectureUseCase {
     entityManger: EntityManager
   ): Promise<void> {
     const existLectureEnrollmentHistoryEntity =
-      await this.lectureEnrollmentHistory.findByLectureIdAndUserId(
-        lectureDetail.lectureId,
+      await this.lectureEnrollmentHistory.findByLectureDetailIdAndUserId(
+        lectureDetail.id,
         dto.userId,
         entityManger
       );
