@@ -6,16 +6,14 @@ import { ILectureRepository } from "../domain/interface/repository/lecture.repos
 import { IBrowseLecturesUseCase } from "../domain/interface/usecase/browse-lectures.usecase.interface";
 import { LectureDetailMapper } from "../domain/mapper/lecture-detail.mapper";
 import { LectureMapper } from "../domain/mapper/lecture.mapper";
-import { LectureDetailRepository } from "../infrastructure/repository/lecture-detail.repository";
-import { LectureRepository } from "../infrastructure/repository/lecture.repository";
 import { LectureDto } from "../presentation/dto/response/lecture.dto";
 
 @Injectable()
 export class BrowseLecturesUseCase implements IBrowseLecturesUseCase {
   constructor(
-    @Inject(LectureRepository.name)
+    @Inject("ILectureRepository")
     private readonly lectureRepository: ILectureRepository,
-    @Inject(LectureDetailRepository.name)
+    @Inject("ILectureDetailRepository")
     private readonly lectureDetailRepository: ILectureDetailRepository,
     private readonly lectureMapper: LectureMapper,
     private readonly lectureDetailMapper: LectureDetailMapper

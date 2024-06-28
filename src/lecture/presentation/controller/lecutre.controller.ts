@@ -5,24 +5,20 @@ import { IBrowseLecturesUseCase } from "src/lecture/domain/interface/usecase/bro
 import { ICreateLectureUseCase } from "src/lecture/domain/interface/usecase/create-lecture.usecase.interface";
 import { IEnrollLectureUseCase } from "src/lecture/domain/interface/usecase/enroll-lecture.usecase.interface";
 import { BrowseLectureEnrollmentHistoriesDto } from "src/lecture/presentation/dto/request/browse-lecture-enrollment-histories.dto";
-import { BrowseLecturesUseCase } from "src/lecture/usecase/browse-lectures.usecase";
-import { EnrollLectureUseCase } from "src/lecture/usecase/enroll-lecture.usecase";
-import { CreateLectureUseCase } from "../../usecase/create-lecture.usecase";
 import { CreateLectureDto } from "../dto/request/create-lecture.dto";
 import { EnrollLectureDto } from "../dto/request/enroll-lecture.dto";
 import { LectureDto } from "../dto/response/lecture.dto";
-import { BrowseLectureEnrollmentHistoriesUseCase } from "./../../usecase/browse-lecture-enrollment-histories.usecase";
 
 @Controller("/lectures")
 export class LectureController {
   constructor(
-    @Inject(CreateLectureUseCase.name)
+    @Inject("ICreateLectureUseCase")
     private readonly createLectureUseCase: ICreateLectureUseCase,
-    @Inject(EnrollLectureUseCase.name)
+    @Inject("IEnrollLectureUseCase")
     private readonly enrollLectureUseCase: IEnrollLectureUseCase,
-    @Inject(BrowseLectureEnrollmentHistoriesUseCase.name)
+    @Inject("IBrowseLectureEnrollmentHistoriesUseCase")
     private readonly browseLectureEnrollmentHistoriesUseCase: IBrowseLectureEnrollmentHistoriesUseCase,
-    @Inject(BrowseLecturesUseCase.name)
+    @Inject("IBrowseLecturesUseCase")
     private readonly browseLecturesUseCase: IBrowseLecturesUseCase
   ) {}
 

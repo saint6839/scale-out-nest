@@ -8,9 +8,6 @@ import { IBrowseLectureEnrollmentHistoriesUseCase } from "../domain/interface/us
 import { LectureDetailMapper } from "../domain/mapper/lecture-detail.mapper";
 import { LectureEnrollmentHistoryMapper } from "../domain/mapper/lecture-enrollment-history.mapper";
 import { LectureMapper } from "../domain/mapper/lecture.mapper";
-import { LectureDetailRepository } from "../infrastructure/repository/lecture-detail.repository";
-import { LectureEnrollmentHistoryRepository } from "../infrastructure/repository/lecture-enrollment-history.repository";
-import { LectureRepository } from "../infrastructure/repository/lecture.repository";
 import { BrowseLectureEnrollmentHistoriesDto } from "../presentation/dto/request/browse-lecture-enrollment-histories.dto";
 import { LectureDto } from "../presentation/dto/response/lecture.dto";
 
@@ -22,11 +19,11 @@ export class BrowseLectureEnrollmentHistoriesUseCase
   implements IBrowseLectureEnrollmentHistoriesUseCase
 {
   constructor(
-    @Inject(LectureRepository.name)
+    @Inject("ILectureRepository")
     private readonly lectureRepository: ILectureRepository,
-    @Inject(LectureEnrollmentHistoryRepository.name)
+    @Inject("ILectureEnrollmentHistoryRepository")
     private readonly lectureEnrollmentHistory: ILectureEnrollmentHistoryRepository,
-    @Inject(LectureDetailRepository.name)
+    @Inject("ILectureDetailRepository")
     private readonly lectureDetailRepository: ILectureDetailRepository,
     private readonly lectureMapper: LectureMapper,
     private readonly lectureEnrollmentHistoryMapper: LectureEnrollmentHistoryMapper,

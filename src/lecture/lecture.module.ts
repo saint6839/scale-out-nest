@@ -27,31 +27,31 @@ import { EnrollLectureUseCase } from "./usecase/enroll-lecture.usecase";
   ],
   providers: [
     {
-      provide: LectureRepository.name,
+      provide: "ILectureRepository",
       useClass: LectureRepository,
     },
     {
-      provide: LectureEnrollmentHistoryRepository.name,
+      provide: "ILectureEnrollmentHistoryRepository",
       useClass: LectureEnrollmentHistoryRepository,
     },
     {
-      provide: LectureDetailRepository.name,
+      provide: "ILectureDetailRepository",
       useClass: LectureDetailRepository,
     },
     {
-      provide: CreateLectureUseCase.name,
+      provide: "ICreateLectureUseCase",
       useClass: CreateLectureUseCase,
     },
     {
-      provide: EnrollLectureUseCase.name,
+      provide: "IEnrollLectureUseCase",
       useClass: EnrollLectureUseCase,
     },
     {
-      provide: BrowseLectureEnrollmentHistoriesUseCase.name,
+      provide: "IBrowseLectureEnrollmentHistoriesUseCase",
       useClass: BrowseLectureEnrollmentHistoriesUseCase,
     },
     {
-      provide: BrowseLecturesUseCase.name,
+      provide: "IBrowseLecturesUseCase",
       useClass: BrowseLecturesUseCase,
     },
     LectureMapper,

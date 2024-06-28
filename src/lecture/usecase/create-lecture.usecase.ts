@@ -4,14 +4,13 @@ import { Lecture } from "../domain/entity/lecture";
 import { ILectureRepository } from "../domain/interface/repository/lecture.repository.interface";
 import { ICreateLectureUseCase } from "../domain/interface/usecase/create-lecture.usecase.interface";
 import { LectureMapper } from "../domain/mapper/lecture.mapper";
-import { LectureRepository } from "../infrastructure/repository/lecture.repository";
 import { CreateLectureDto } from "../presentation/dto/request/create-lecture.dto";
 import { LectureDto } from "../presentation/dto/response/lecture.dto";
 
 @Injectable()
 export class CreateLectureUseCase implements ICreateLectureUseCase {
   constructor(
-    @Inject(LectureRepository.name)
+    @Inject("ILectureRepository")
     private readonly lectureRepository: ILectureRepository,
     private readonly lectureMapper: LectureMapper,
     private readonly dataSource: DataSource

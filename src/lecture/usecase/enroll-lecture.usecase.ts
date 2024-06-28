@@ -9,9 +9,6 @@ import { ILectureEnrollmentHistoryRepository } from "../domain/interface/reposit
 import { ILectureRepository } from "../domain/interface/repository/lecture.repository.interface";
 import { IEnrollLectureUseCase } from "../domain/interface/usecase/enroll-lecture.usecase.interface";
 import { LectureDetailMapper } from "../domain/mapper/lecture-detail.mapper";
-import { LectureDetailRepository } from "../infrastructure/repository/lecture-detail.repository";
-import { LectureEnrollmentHistoryRepository } from "../infrastructure/repository/lecture-enrollment-history.repository";
-import { LectureRepository } from "../infrastructure/repository/lecture.repository";
 import { EnrollLectureDto } from "../presentation/dto/request/enroll-lecture.dto";
 import { LectureMapper } from "./../domain/mapper/lecture.mapper";
 
@@ -23,11 +20,11 @@ export const ALREADY_ENROLLED_LECTURE_EXCEPTION_MESSAGE =
 @Injectable()
 export class EnrollLectureUseCase implements IEnrollLectureUseCase {
   constructor(
-    @Inject(LectureRepository.name)
+    @Inject("ILectureRepository")
     private readonly lectureRepository: ILectureRepository,
-    @Inject(LectureEnrollmentHistoryRepository.name)
+    @Inject("ILectureEnrollmentHistoryRepository")
     private readonly lectureEnrollmentHistory: ILectureEnrollmentHistoryRepository,
-    @Inject(LectureDetailRepository.name)
+    @Inject("ILectureDetailRepository")
     private readonly lectureDetailRepository: ILectureDetailRepository,
     @Inject("IUserValidator")
     private readonly userValidator: IUserValidator,
