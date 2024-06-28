@@ -1,5 +1,6 @@
 import { Inject, Injectable } from "@nestjs/common";
 import { LectureEnrollmentHistory } from "src/lecture/domain/entity/lecture-enrollment-history";
+import { IUserValidator } from "src/user/domain/interface/service/user.validator.interface";
 import { DataSource, EntityManager } from "typeorm";
 import { LectureDetail } from "../domain/entity/lecture-detail";
 import { LockMode } from "../domain/enum/lock-mode.enum";
@@ -28,6 +29,8 @@ export class EnrollLectureUseCase implements IEnrollLectureUseCase {
     private readonly lectureEnrollmentHistory: ILectureEnrollmentHistoryRepository,
     @Inject(LectureDetailRepository.name)
     private readonly lectureDetailRepository: ILectureDetailRepository,
+    @Inject("IUserValidator")
+    private readonly userValidator: IUserValidator,
     private readonly lectureMapper: LectureMapper,
     private readonly lectureDetailMapper: LectureDetailMapper,
     private readonly dataSource: DataSource
@@ -42,6 +45,7 @@ export class EnrollLectureUseCase implements IEnrollLectureUseCase {
   async execute(dto: EnrollLectureDto): Promise<void> {
     return await this.dataSource.transaction(
       async (entityManger: EntityManager) => {
+        await this.userValidator.validateUserExists(dto.userId);
         const lectureDetail = await this.findLectureDetail(dto, entityManger);
         await this.validateExistLectureEnrollmentHistory(dto, entityManger);
         await this.enrollLecture(dto, entityManger);

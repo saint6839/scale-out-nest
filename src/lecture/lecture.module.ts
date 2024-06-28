@@ -1,5 +1,6 @@
 import { Module } from "@nestjs/common";
 import { TypeOrmModule } from "@nestjs/typeorm";
+import { UserModule } from "src/user/user.module";
 import { LectureDetailMapper } from "./domain/mapper/lecture-detail.mapper";
 import { LectureEnrollmentHistoryMapper } from "./domain/mapper/lecture-enrollment-history.mapper";
 import { LectureMapper } from "./domain/mapper/lecture.mapper";
@@ -22,6 +23,7 @@ import { EnrollLectureUseCase } from "./usecase/enroll-lecture.usecase";
       LectureEnrollmentHistoryEntity,
       LectureDetailEntity,
     ]),
+    UserModule,
   ],
   providers: [
     {
