@@ -109,8 +109,8 @@ export class EnrollLectureUseCase implements IEnrollLectureUseCase {
   }
 
   /**
-   * @description 강의를 찾는 함수
-   * @throws {Error} 존재하는 강의가 없다면 예외를 발생시킨다.
+   * @description 강의 상세 일정을 조회하는 메서드
+   * @throws {Error} 존재하는 강의 상세 일정이 없다면 예외를 발생시킨다.
    * @param dto
    * @param entityManger
    * @returns Lecture
