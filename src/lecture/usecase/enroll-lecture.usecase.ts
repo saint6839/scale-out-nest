@@ -34,8 +34,8 @@ export class EnrollLectureUseCase implements IEnrollLectureUseCase {
   ) {}
 
   /**
-   * @description 특정 강의에 대한 특정 유저의 수강 신청 정보를 저장하는 usecase
-   * @description 수강 신청을 하기 전에 이미 수강 신청한 이력이 있는지 확인하고, 없다면 수강 신청을 진행하고, 강의의 수강 인원을 증가시킨다.
+   * @description 특정 강의 일정에 대한 특정 유저의 수강 신청 정보를 저장하는 usecase
+   * @description 수강 신청을 하기 전에 이미 수강 신청한 이력이 있는지 확인하고, 없다면 수강 신청을 진행하고, 강의 상세 일정의 수강 인원을 증가시킨다.
    * @param dto userId, lectureId
    * @returns LectureDto
    */
