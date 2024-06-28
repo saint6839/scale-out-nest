@@ -43,11 +43,7 @@ export class EnrollLectureUseCase implements IEnrollLectureUseCase {
     return await this.dataSource.transaction(
       async (entityManger: EntityManager) => {
         const lectureDetail = await this.findLectureDetail(dto, entityManger);
-        await this.validateExistLectureEnrollmentHistory(
-          dto,
-          lectureDetail,
-          entityManger
-        );
+        await this.validateExistLectureEnrollmentHistory(dto, entityManger);
         await this.enrollLecture(dto, entityManger);
         return await this.increaseLectureDetailCurrentEnrollment(
           lectureDetail,
@@ -98,12 +94,11 @@ export class EnrollLectureUseCase implements IEnrollLectureUseCase {
    */
   private async validateExistLectureEnrollmentHistory(
     dto: EnrollLectureDto,
-    lectureDetail: LectureDetail,
     entityManger: EntityManager
   ): Promise<void> {
     const existLectureEnrollmentHistoryEntity =
       await this.lectureEnrollmentHistory.findByLectureDetailIdAndUserId(
-        lectureDetail.id,
+        dto.lectureDetailId,
         dto.userId,
         entityManger
       );
