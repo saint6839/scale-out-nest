@@ -10,7 +10,7 @@ export class LectureDetailEntity {
   lectureId: number;
 
   @Column({ type: "timestamp" })
-  startAt: Date;
+  enrollAt: Date;
 
   @Column()
   capacity: number;
@@ -21,7 +21,7 @@ export class LectureDetailEntity {
   static fromDomain(domain: LectureDetail): LectureDetailEntity {
     const entity = new LectureDetailEntity();
     entity.id = domain.id;
-    entity.startAt = domain.startAt;
+    entity.enrollAt = domain.enrollAt;
     entity.capacity = domain.capacity;
     entity.currentEnrollment = domain.currentEnrollment;
     return entity;

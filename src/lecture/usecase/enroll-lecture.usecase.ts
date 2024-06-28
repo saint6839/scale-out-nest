@@ -136,7 +136,7 @@ export class EnrollLectureUseCase implements IEnrollLectureUseCase {
     const lectureDetail =
       this.lectureDetailMapper.toDomainFromEntity(lectureDetailEntity);
 
-    lectureDetail.validateEnrollStartAt(new Date());
+    lectureDetail.validateEnrollAt(new Date());
     return lectureDetail;
   }
 }

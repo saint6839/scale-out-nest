@@ -9,7 +9,7 @@ export class LectureDetailMapper {
       ? new LectureDetail(
           entity.id,
           entity.lectureId,
-          entity.startAt,
+          entity.enrollAt,
           entity.capacity,
           entity.currentEnrollment
         )

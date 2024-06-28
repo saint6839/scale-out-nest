@@ -20,7 +20,7 @@ export class LectureMapper {
               new LectureDetailDto(
                 lectureDetail.id,
                 lectureDetail.lectureId,
-                lectureDetail.startAt,
+                lectureDetail.enrollAt,
                 lectureDetail.capacity,
                 lectureDetail.currentEnrollment
               )

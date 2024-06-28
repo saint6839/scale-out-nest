@@ -98,7 +98,7 @@ describe("EnrollLectureUseCase", () => {
         .map((_, index) => ({
           id: index + 1,
           lectureId: index + 1,
-          startAt: new Date(),
+          enrollAt: new Date(),
           capacity: capacityPerLecture,
           currentEnrollment: initialEnrollment,
         }));
@@ -119,7 +119,7 @@ describe("EnrollLectureUseCase", () => {
           return new LectureDetail(
             entity.id,
             entity.lectureId,
-            entity.startAt,
+            entity.enrollAt,
             entity.capacity,
             entity.currentEnrollment
           );
@@ -172,7 +172,7 @@ describe("EnrollLectureUseCase", () => {
       const lectureDetailEntity = {
         id: 1,
         lectureId: 1,
-        startAt: new Date(),
+        enrollAt: new Date(),
         capacity: capacity,
         currentEnrollment: currentEnrollment,
       };
@@ -192,7 +192,7 @@ describe("EnrollLectureUseCase", () => {
           return new LectureDetail(
             entity.id,
             entity.lectureId,
-            entity.startAt,
+            entity.enrollAt,
             entity.capacity,
             entity.currentEnrollment
           );
@@ -245,7 +245,7 @@ describe("EnrollLectureUseCase", () => {
       const lectureDetailEntity = {
         id: 1,
         lectureId: 1,
-        startAt: new Date(),
+        enrollAt: new Date(),
         capacity: 10,
         currentEnrollment: 5,
       };
@@ -302,7 +302,7 @@ describe("EnrollLectureUseCase", () => {
       const lectureDetailEntity = {
         id: 1,
         lectureId: 1,
-        startAt: new Date(),
+        enrollAt: new Date(),
         capacity: 10,
         currentEnrollment: 5,
       };
@@ -332,7 +332,7 @@ describe("EnrollLectureUseCase", () => {
       const lectureDetailEntity = {
         id: 1,
         lectureId: 1,
-        startAt: futureDate,
+        enrollAt: futureDate,
         capacity: 10,
         currentEnrollment: 5,
       };
@@ -358,7 +358,7 @@ describe("EnrollLectureUseCase", () => {
       const lectureDetailEntity = {
         id: 1,
         lectureId: 1,
-        startAt: new Date(),
+        enrollAt: new Date(),
         capacity: 10,
         currentEnrollment: 10,
       };
@@ -384,7 +384,7 @@ describe("EnrollLectureUseCase", () => {
       const lectureDetailEntity = {
         id: 1,
         lectureId: 1,
-        startAt: new Date(),
+        enrollAt: new Date(),
         capacity: 10,
         currentEnrollment: 5,
       };

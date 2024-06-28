@@ -105,7 +105,7 @@ describe("BrowseLectureUseCase", () => {
         {
           id: 1,
           lectureId: 1,
-          startAt: new Date(),
+          enrollAt: new Date(),
           capacity: 10,
           currentEnrollment: 5,
         } as LectureDetailEntity,
@@ -118,7 +118,7 @@ describe("BrowseLectureUseCase", () => {
         lectureDetails: [
           {
             id: 1,
-            startAt: new Date(),
+            enrollAt: new Date(),
             capacity: 10,
             currentEnrollment: 5,
           } as LectureDetailDto,

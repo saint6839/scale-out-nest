@@ -4,20 +4,20 @@ export const CANT_ENROLL_TIME_EXCEPTION_MESSAGE = "수강 신청 시간이 아�
 export class LectureDetail {
   private _id: number;
   private _lectureId: number;
-  private _startAt: Date;
+  private _enrollAt: Date;
   private _capacity: number;
   private _currentEnrollment: number;
 
   constructor(
     id: number,
     lectureId: number,
-    startAt: Date,
+    enrollAt: Date,
     capacity: number,
     currentEnrollment: number
   ) {
     this._id = id;
     this._lectureId = lectureId;
-    this._startAt = startAt;
+    this._enrollAt = enrollAt;
     this._capacity = capacity;
     this._currentEnrollment = currentEnrollment;
   }
@@ -30,8 +30,8 @@ export class LectureDetail {
     return this._lectureId;
   }
 
-  get startAt(): Date {
-    return this._startAt;
+  get enrollAt(): Date {
+    return this._enrollAt;
   }
 
   get capacity(): number {
@@ -57,8 +57,8 @@ export class LectureDetail {
    * @description 요청이 들어온 시간이 startAt 이후인지 확인한다.
    * @throws {Error} 요청이 들어온 시간이 startAt 이후가 아닐 때 발생한다.
    */
-  public validateEnrollStartAt(currentTime: Date): void {
-    if (currentTime.getTime() < this._startAt.getTime()) {
+  public validateEnrollAt(currentTime: Date): void {
+    if (currentTime.getTime() < this._enrollAt.getTime()) {
       throw new Error(CANT_ENROLL_TIME_EXCEPTION_MESSAGE);
     }
   }
