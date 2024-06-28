@@ -1,14 +1,13 @@
 import { Body, Controller, Inject, Post } from "@nestjs/common";
-import { CreateUserUseCase } from "src/user/usecase/create-user.usecase";
+import { ApiResponseDto } from "src/common/api/api-response.dto";
+import { ICreateUserUseCase } from "src/user/domain/interface/usecase/create-user.usecase.interface";
 import { CreateUserDto } from "../dto/request/create-user.dto";
 import { UserDto } from "../dto/response/user.dto";
-import { ICreateUserUseCase } from "src/user/domain/interface/usecase/create-user.usecase.interface";
-import { ApiResponseDto } from "src/common/api/api-response.dto";
 
 @Controller("/users")
 export class UserController {
   constructor(
-    @Inject(CreateUserUseCase.name)
+    @Inject("ICreateUserUseCase")
     private readonly createUserUseCase: ICreateUserUseCase
   ) {}
 

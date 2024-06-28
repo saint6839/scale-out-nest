@@ -1,21 +1,27 @@
 import { Module } from "@nestjs/common";
-import { UserRepository } from "./infrastructure/repository/user.repository";
-import { UserController } from "./presentation/controller/user.controller";
 import { TypeOrmModule } from "@nestjs/typeorm";
-import { UserEntity } from "./infrastructure/entity/user.entity";
-import { CreateUserUseCase } from "./usecase/create-user.usecase";
 import { UserMapper } from "./domain/mapper/user.mapper";
+import { UserEntity } from "./infrastructure/entity/user.entity";
+import { UserRepository } from "./infrastructure/repository/user.repository";
+import { UserValidatorService } from "./infrastructure/service/user.validator.service";
+import { UserController } from "./presentation/controller/user.controller";
+import { CreateUserUseCase } from "./usecase/create-user.usecase";
 
 @Module({
   imports: [TypeOrmModule.forFeature([UserEntity])],
+  exports: ["IUserValidator"],
   providers: [
     {
-      provide: UserRepository.name,
+      provide: "IUserRepository",
       useClass: UserRepository,
     },
     {
-      provide: CreateUserUseCase.name,
+      provide: "ICreateUserUseCase",
       useClass: CreateUserUseCase,
+    },
+    {
+      provide: "IUserValidator",
+      useClass: UserValidatorService,
     },
     UserMapper,
   ],

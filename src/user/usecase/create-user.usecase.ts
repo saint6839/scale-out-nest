@@ -3,14 +3,13 @@ import { User } from "../domain/entity/user";
 import { IUserRepository } from "../domain/interface/repository/user.repository.interface";
 import { ICreateUserUseCase } from "../domain/interface/usecase/create-user.usecase.interface";
 import { UserMapper } from "../domain/mapper/user.mapper";
-import { UserRepository } from "../infrastructure/repository/user.repository";
 import { CreateUserDto } from "../presentation/dto/request/create-user.dto";
 import { UserDto } from "../presentation/dto/response/user.dto";
 
 @Injectable()
 export class CreateUserUseCase implements ICreateUserUseCase {
   constructor(
-    @Inject(UserRepository.name)
+    @Inject("IUserRepository")
     private readonly userRepository: IUserRepository,
     private readonly userMapper: UserMapper
   ) {}
